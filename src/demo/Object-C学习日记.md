@@ -11,7 +11,9 @@ category:
   - 使用指南
 tag:
   - Objetc-C
-
+footer: 这是一个页脚
+# 你可以自定义版权信息
+copyright: 没有版权捏
 comment: false
 ---
 
@@ -102,4 +104,4 @@ int testblock() {
 
 看了一篇文章[Objective-C的本质](https://cloud.tencent.com/developer/article/1136783)
 
-`xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc 文件名 -o 输出的CPP文件`在根目录用命令行可以将Objc文件编译成Cpp文件，我
+`xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc 文件名 -o 输出的CPP文件`在根目录用命令行可以将Objc文件编译成Cpp文件，除了最基本的实现，整个代码3MB多，整整5w多行。所以大概率Objc编译多过程中是不会间接生成cpp代码的。

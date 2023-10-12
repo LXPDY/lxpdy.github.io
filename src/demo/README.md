@@ -8,5 +8,4 @@ comment: false
 
 ## 目录
 
-- [初见Object-C](markdown.md)
-- [初见Xcode](page.md)
+- [学习日记](Object-C学习日记.md)
