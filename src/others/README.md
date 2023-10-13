@@ -1,5 +1,5 @@
 ---
-title: 前言
+title: 日常记录
 
 order: 1
 icon: file
@@ -8,9 +8,9 @@ author: Fuyuyu
 # 设置写作时间
 date: 2023-10-07
 category:
-  - 使用指南
+  - 随便写写
 tag:
-  - 日记
+  - 随笔
 
 comment: false
 ---

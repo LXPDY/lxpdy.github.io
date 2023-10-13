@@ -22,9 +22,11 @@ export default navbar([
       },
     ],
   },
+  "/others/",
   {
-    text: "裴冬柚",
+    text: "Bilibili",
     icon: "book",
     link: "https://space.bilibili.com/151955537",
   },
+  
 ]);

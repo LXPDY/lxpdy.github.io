@@ -24,7 +24,7 @@ export default hopeTheme({
   // sidebar
   sidebar,
 
-  footer: "默认页脚",
+  footer: "紫罗兰",
 
   displayFooter: true,
 
@@ -43,7 +43,7 @@ export default hopeTheme({
     // You should generate and use your own comment service
     comment: {
       provider: "Giscus",
-      repo: "vuepress-theme-hope/giscus-discussions",
+      repo: "lxpdy/giscus-discussions",
       repoId: "R_kgDOG_Pt2A",
       category: "Announcements",
       categoryId: "DIC_kwDOG_Pt2M4COD69",
