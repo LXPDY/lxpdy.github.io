@@ -1,1 +1,0 @@
-import{_ as o}from"./plugin-vue_export-helper-c27b6911.js";import{o as c,c as n,a as e,b as t}from"./app-2ebd7f77.js";const s={},_=e("p",null,[t("·"),e("br"),t(" ·"),e("br"),t(" 如果你喜欢本站，那谢谢喜欢本站。")],-1),r=e("p",null,"如果你不喜欢本站，那谢谢浏览本站。。",-1),a=[_,r];function l(d,i){return c(),n("div",null,a)}const p=o(s,[["render",l],["__file","index.html.vue"]]);export{p as default};
