@@ -6,22 +6,20 @@ icon: file
 # 设置作者
 author: Fuyuyu
 # 设置写作时间
-date: 2023-10-12
+date: 2023-10
 category:
-  - 使用指南
+  - 学习日记
 tag:
   - Objetc-C
 footer: 这是一个页脚
 # 你可以自定义版权信息
-copyright: 文章内容归作者所有
+copyright: 文章内容归作者所有，不保证完全正确
 comment: false
 ---
 
 # Object-C学习日记
 
-## 日常篇
-
-#### 2023.10.10 Object-C++的存在
+## 2023.10.10 Object-C++的存在
 
 在`Xcode`中直接创建一个macOS的命令行工程，尝试在其中添加CPP代码
 
@@ -72,7 +70,7 @@ Objc的代码中可以直接`import`C++的头文件，调用C++的函数来实�
 
 
 
-#### 2023.10.12 Object-C Block，Objc版本的lambda表达式？block作返回值
+## 2023.10.12 Object-C Block，Objc版本的lambda表达式？block作返回值
 
 ```objc
 typedef void (^SeleFunc)(int n);
@@ -104,7 +102,7 @@ int testblock() {
 
 `block`在形式上很像`C++`的`lambda`表达式，但或许功能上更接近函数指针。
 
-#### 2023.10.12 - 13 Object-C底层研究
+## 2023.10.12 - 13 Object-C底层研究
 
 看了几篇文章[Objective-C的本质](https://cloud.tencent.com/developer/article/1136783)、[OC对象的前世今生](https://juejin.cn/post/6844904024659984391#heading-20)、 [自动释放池](https://draveness.me/autoreleasepool/)
 
@@ -122,7 +120,7 @@ int testblock() {
 - `class`调用类方法的轨迹     
   - `isa`找`meta-class`，方法不存在，就通过`superclass`找父类
 
-####  类的属性与成员变量
+###  类的属性与成员变量
 
 这个是`Objc`的一个独特的变量管理策略。
 
@@ -135,9 +133,182 @@ int testblock() {
   - 属性自带原子性
   - 自带`getter`和`setter`方法
 
-####  Tagged Pointer —— 一种假指针
+###  Tagged Pointer —— 一种假指针
 
 `Tagged Pointer`是一种很神奇的存在，其在代码中虽然表现为正常的一个指针类型的变量，但是实际上其存储的内容不再是对应内容的地址，而是对应内容的本身。
 
 - 也就是说，如果指针将要存储的内容可以由8个字节【指针变量原本的大小】承载，那么编译器会将这部分内容存储到指针变量当中
 - 体现在多线程上，则是每次修改其内容并不需要考虑申请与释放，因为它通过一条指令就可以直接被修改而没有中间过程
+
+
+
+## 2023.10.16 
+
+### @AutoreleasePool  自动释放池
+
+[IOS - 聊聊 autorelease 和 @autoreleasepool](https://cloud.tencent.com/developer/article/1615642)
+
+```Objc
+int main(int argc, char * argv[]) {
+    NSString * appDelegateClassName;
+    @autoreleasepool {
+        // Setup code that might create autoreleased objects goes here.
+        appDelegateClassName = NSStringFromClass([AppDelegate class]);
+    }
+    return UIApplicationMain(argc, argv, nil, appDelegateClassName);
+}
+```
+
+如果你的程序使用了`AppKit`或`UIKit`框架，那么主线程的`RunLoop`就会在每次事件循环迭代中创建并处理`@autoreleasepool`。也就是说，应用程序所有`autorelease`对象的都是由`RunLoop`创建的`@autoreleasepool`来管理。而`main()`函数中的`@autoreleasepool`只是负责管理它的作用域中的`autorelease`对象。
+
+#### 本质：
+
+一个结构体（C++类），有构造和析构函数，这个结构体会在初始化时调用 `objc_autoreleasePoolPush()` 方法，会在析构时调用 `objc_autoreleasePoolPop()` 方法
+
+#### 自动释放池的构成单元：AutoreleasePoolPage 
+
+在`Objc`底层代码中的定义，是一个C++类，其结构为一个栈
+
+```C++
+class AutoreleasePoolPage {
+  //一些定义
+  
+  #   define EMPTY_POOL_PLACEHOLDER ((id*)1)  
+  // EMPTY_POOL_PLACEHOLDER：表示一个空自动释放池的占位符
+#   define POOL_BOUNDARY nil                // POOL_BOUNDARY：哨兵对象
+    static pthread_key_t const key = AUTORELEASE_POOL_KEY;
+    static uint8_t const SCRIBBLE = 0xA3;   // 用来标记已释放的对象
+    static size_t const SIZE =              // 每个 Page 对象占用 4096 个字节内存
+#if PROTECT_AUTORELEASEPOOL                 // PAGE_MAX_SIZE = 4096
+        PAGE_MAX_SIZE;  // must be muliple of vm page size
+#else
+        PAGE_MAX_SIZE;  // size and alignment, power of 2
+#endif
+    static size_t const COUNT = SIZE / sizeof(id);  // Page 的个数
+  
+  
+  
+    magic_t const magic;//用于对当前 AutoreleasePoolPage 完整性的校验
+    id *next;//next 指向了页内部空间下一个为空的内存地址，用于存放要autorelease对对象
+    pthread_t const thread;//保存了当前页所在的线程
+    AutoreleasePoolPage * const parent;
+    AutoreleasePoolPage *child;//构造双向链表的指针
+    uint32_t const depth;// Page 的深度，从 0 开始递增
+    uint32_t hiwat;
+};
+//实际分配内存除了这些成员变量，还有剩下的空间作为页的储存空间，同时begin()和end()这两个类的实例方法能够快速获取这段空间的头尾，通过next指针获取页内空间为空的下一个地址
+
+
+```
+
+每一个自动释放池都是由一系列的 `AutoreleasePoolPage` 组成的，并且每一个 `AutoreleasePoolPage` 的大小都是 `4096` 字节（16 进制 0x1000），并以双向链表的形式连接在一起。
+
+##### 哨兵对象：POOL_BOUNDARY【之前叫POOL_SENTINEL】
+
+在每个自动释放池初始化调用 `objc_autoreleasePoolPush` 的时候，都会把一个 `POOL_SENTINEL` push 到自动释放池的栈顶，并且返回这个 `POOL_SENTINEL` 哨兵对象。而当方法 `objc_autoreleasePoolPop` 调用时，就会向自动释放池中的对象发送 `release` 消息，直到第一个 `POOL_SENTINEL`：
+
+以上操作是针对`AutoreleasePoolPage`内部空间来说的
+
+##### objc_autoreleasePoolPush 方法
+
+```objc
+//入口
+void *objc_autoreleasePoolPush(void) {
+    return AutoreleasePoolPage::push();//调用push
+}
+//下一步
+static inline void *push() {
+        id *dest;
+        if (DebugPoolAllocation) { // 出错时进入调试状态
+            // Each autorelease pool starts on a new pool page.
+            dest = autoreleaseNewPage(POOL_BOUNDARY);
+        } else {
+            dest = autoreleaseFast(POOL_BOUNDARY);  // 传入 POOL_BOUNDARY 哨兵对象
+        }
+        assert(dest == EMPTY_POOL_PLACEHOLDER || *dest == POOL_BOUNDARY);
+        return dest;
+}
+//下一步
+static inline id *autoreleaseFast(id obj)
+{
+   AutoreleasePoolPage *page = hotPage();//尝试新创建的未满的 Page
+   if (page && !page->full()) {
+       return page->add(obj);//有页且页不满，直接把autorelease对象入栈
+   } else if (page) {
+       return autoreleaseFullPage(obj, page);
+     //有页且页满，创建一个新的 Page，并将 autorelease 对象添加进去
+   } else {
+       return autoreleaseNoPage(obj);//创建第一个 Page，并将 autorelease 对象添加进去
+   }
+}
+
+//add
+  id *add(id obj)
+  {
+      assert(!full());
+      unprotect();
+      id *ret = next;  // faster than `return next-1` because of aliasing
+      *next++ = obj;
+      protect();
+      return ret;
+  }
+
+
+//autoreleaseFullPage
+//将autorelease对象添加到Page中的next指针所指向的位置，
+//并将next指针指向这个对象的下一个位置，然后将该对象的位置返回
+  static __attribute__((noinline))
+  id *autoreleaseFullPage(id obj, AutoreleasePoolPage *page)
+  {
+      // The hot page is full. 
+      // Step to the next non-full page, adding a new page if necessary.
+      // Then add the object to that page.
+      assert(page == hotPage());
+      assert(page->full()  ||  DebugPoolAllocation);
+
+      do {
+          if (page->child) page = page->child;
+          else page = new AutoreleasePoolPage(page);
+      } while (page->full());
+
+      setHotPage(page);
+      return page->add(obj);
+  }
+
+//不展示autoreleaseNoPage的代码了
+既然当前内存中不存在 AutoreleasePoolPage，就要从头开始构建这个自动释放池的双向链表，也就是说，新的 AutoreleasePoolPage 是没有 parent 指针的。
+  初始化之后，将当前页标记为 hotPage，然后会先向这个 page 中添加一个 POOL_SENTINEL 对象，来确保在 pop 调用的时候，不会出现异常。
+最后，将 obj 添加到自动释放池中。
+```
+
+##### objc_autoreleasePoolPop 方法
+
+```objective-c
+void objc_autoreleasePoolPop(void *ctxt) {
+    AutoreleasePoolPage::pop(ctxt);
+}
+
+//此处为简化板代码，只体现主要逻辑
+//pop()方法的传参token即为POOL_BOUNDARY对应在Page中的地址
+//目的是将自动释放池中的autorelease对象全部释放（实际上是从自动释放池的中的最后一个入栈的autorelease对象开始，依次给它们发送一条release消息，直到遇到这个POOL_BOUNDARY）
+static inline void pop(void *token) {
+    AutoreleasePoolPage *page = pageForPointer(token);
+  //使用 pageForPointer 获取当前 token 所在的 AutoreleasePoolPage
+    id *stop = (id *)token;
+
+    page->releaseUntil(stop);
+//调用 releaseUntil 方法释放栈中的对象，直到 stop【即为POOL_BOUNDARY的地址；】
+//调用 child 的 kill 方法
+    if (page->child) {
+        if (page->lessThanHalfFull()) {
+            page->child->kill();
+        } else if (page->child->child) {
+            page->child->child->kill();
+        }
+    }
+}
+```
+
+##### 总结
+
+关于这部分，还有很多代码和细节没有去深究，毕竟还是在初学阶段（~~其实还是偷懒+看不懂~~），但是研究过后，还是不得不佩服苹果在这方面做出的细节，对于一个计算机的学生来说，这部分代码即是只是一个程序的内存管理系统，但是俨然已经很像一个完备的操作系统的内存管理系统。这部分，其实很像java的JVM系列的自动管理。
