@@ -19,7 +19,9 @@ comment: false
 
 # Object-C学习日记
 
-## 2023.10.10 Object-C++的存在
+## 2023.10.10 
+
+### Object-C++的存在
 
 在`Xcode`中直接创建一个macOS的命令行工程，尝试在其中添加CPP代码
 
@@ -70,7 +72,9 @@ Objc的代码中可以直接`import`C++的头文件，调用C++的函数来实�
 
 
 
-## 2023.10.12 Object-C Block，Objc版本的lambda表达式？block作返回值
+## 2023.10.12 
+
+### Object-C Block，Objc版本的lambda表达式？block作返回值
 
 ```objc
 typedef void (^SeleFunc)(int n);
@@ -102,7 +106,9 @@ int testblock() {
 
 `block`在形式上很像`C++`的`lambda`表达式，但或许功能上更接近函数指针。
 
-## 2023.10.12 - 13 Object-C底层研究
+## 2023.10.12 - 13 
+
+### Object-C底层研究
 
 看了几篇文章[Objective-C的本质](https://cloud.tencent.com/developer/article/1136783)、[OC对象的前世今生](https://juejin.cn/post/6844904024659984391#heading-20)、 [自动释放池](https://draveness.me/autoreleasepool/)
 
@@ -126,12 +132,13 @@ int testblock() {
 
 - 类的【成员变量】提供给类内部访问，当外部想要访问时，只能通过`->`访问`@public`的成员变量
   - 对于`.h`文件
-    - 对于`@interface在花括号中声明的变量默认访问权限为`@protected`
-    - 对于`@implementation在花括号中声明的变量默认访问权限为`@private`
+    - 对于`@interface在花括号中声明的变量默认访问权限为` `@protected`
+    - 对于`@implementation在花括号中声明的变量默认访问权限为` `@private`
   - 对于`.m`文件，都是无法外部访问的
 - 类的【属性】提供给类外部使用，可以使用点表达式访问
-  - 属性自带原子性
+  - nonatomic or atomic, readwrite or readonly and strong,unsafe_unretained or weak
   - 自带`getter`和`setter`方法
+  - `@synthesis` 部分已经在高版本由Xcode完成，大部分情况下不需要关注
 
 ###  Tagged Pointer —— 一种假指针
 
@@ -202,6 +209,8 @@ class AutoreleasePoolPage {
 ```
 
 每一个自动释放池都是由一系列的 `AutoreleasePoolPage` 组成的，并且每一个 `AutoreleasePoolPage` 的大小都是 `4096` 字节（16 进制 0x1000），并以双向链表的形式连接在一起。
+
+注：`nil` 用于表示指向 Objective-C 对象（id 类型的对象，或者使用 @interface 声明的 OC 对象）的指针为空
 
 ##### 哨兵对象：POOL_BOUNDARY【之前叫POOL_SENTINEL】
 
@@ -312,3 +321,33 @@ static inline void pop(void *token) {
 ##### 总结
 
 关于这部分，还有很多代码和细节没有去深究，毕竟还是在初学阶段（~~其实还是偷懒+看不懂~~），但是研究过后，还是不得不佩服苹果在这方面做出的细节，对于一个计算机的学生来说，这部分代码即是只是一个程序的内存管理系统，但是俨然已经很像一个完备的操作系统的内存管理系统。这部分，其实很像java的JVM系列的自动管理。
+
+另：
+
+`not available in automatic reference counting mode`在学习的过程中发现了这个报错，发现现在高版本的Xcode的编译选项中已经自带引用计数器了，不需要程序员进行初始化
+
+
+
+### NSError
+
+#### 注册方法
+
+```objc
+      NSString *domain = @"com.MyCompany.MyApplication.ErrorDomain";
+      NSString *desc =@"Unable to complete the process";
+      NSDictionary *userInfo = [[NSDictionary alloc] 
+      initWithObjectsAndKeys:desc,
+      @"NSLocalizedDescriptionKey",NULL];  
+      *errorPtr = [NSError errorWithDomain:domain code:-101 userInfo:userInfo];
+```
+
+- `domain` 错误发生域
+- `userInfo`错误详细描述
+- `code`错误码
+
+除了通过错误码来访问相关错误信息，NSError还提供了对应的只读属性来直接读取相关信息。当创建 error 对象时，可以在userinfo中提供这些功能。
+
+不太用过这样的报错体系，希望后面学的更多能回来补充。
+
+
+
