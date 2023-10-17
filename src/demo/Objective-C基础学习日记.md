@@ -63,13 +63,13 @@ int main1() {
 }
 ```
 
-发现是无法在Xcode中直接编译运行的。对于混编代码，需要在`Xcode`侧边栏将文件扩展名更改为`.mm`类型后选择`Objective-C`的类型才行。
+​	发现是无法在Xcode中直接编译运行的。对于混编代码，需要在`Xcode`侧边栏将文件扩展名更改为`.mm`类型后选择`Objective-C`的类型才行。
 
-Objc的代码中可以直接`import`C++的头文件，调用C++的函数来实现逻辑。但是Objc的原生类方法声明实现风格和C++书写风格迥异。
+​	Objc的代码中可以直接`import`C++的头文件，调用C++的函数来实现逻辑。但是Objc的原生类方法声明实现风格和C++书写风格迥异。
 
-经过测试，Objc的文件也可以直接使用C++头文件中的类以及声明的函数，只需要在编译时选定它为Objc++的类型。
+​	经过测试，Objc的文件也可以直接使用C++头文件中的类以及声明的函数，只需要在编译时选定它为Objc++的类型。
 
-甚至stl容器都能支持Objc的对象和数据类型，给人一种诡异的感觉：***~~就好像甜咸豆腐脑混在一起，蜜枣粽里面夹肉~~***；
+​	甚至stl容器都能支持Objc的对象和数据类型，给人一种诡异的感觉：***~~就好像甜咸豆腐脑混在一起，蜜枣粽里面夹肉~~***；
 
 
 
@@ -103,17 +103,17 @@ int testblock() {
 
 ```
 
-` (void (^)(int))` 这个就是`selectfunc`的返回值，表示返回值是一个返回值为void类型，参数为int的block（~~是不是很绕，编程本质上就是套娃~~）。在`[ocTest selectfunc]`这一步获得这个`block`以后，我们就可以直接执行它（~~好像没有什么意义~~），或者声明一对应个`block`类型的变量多次的执行它。
+​	` (void (^)(int))` 这个就是`selectfunc`的返回值，表示返回值是一个返回值为void类型，参数为int的block（~~是不是很绕，编程本质上就是套娃~~）。在`[ocTest selectfunc]`这一步获得这个`block`以后，我们就可以直接执行它（~~好像没有什么意义~~），或者声明一对应个`block`类型的变量多次的执行它。
 
-`block`在形式上很像`C++`的`lambda`表达式，但或许功能上更接近函数指针。
+​	`block`在形式上很像`C++`的`lambda`表达式，但或许功能上更接近函数指针。
 
 ## 2023.10.12 - 13 
 
 ### Objective-C底层研究
 
-看了几篇文章[Objective-C的本质](https://cloud.tencent.com/developer/article/1136783)、[OC对象的前世今生](https://juejin.cn/post/6844904024659984391#heading-20)、 [自动释放池](https://draveness.me/autoreleasepool/)
+​	看了几篇文章[Objective-C的本质](https://cloud.tencent.com/developer/article/1136783)、[OC对象的前世今生](https://juejin.cn/post/6844904024659984391#heading-20)、 [自动释放池](https://draveness.me/autoreleasepool/)
 
-`xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc 文件名 -o 输出的CPP文件`在根目录用命令行可以将Objc文件编译成Cpp文件，除了最基本的实现，整个代码3MB多，整整5w多行。所以大概率Objc编译多过程中是不会间接生成cpp代码的。
+​	`xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc 文件名 -o 输出的CPP文件`在根目录用命令行可以将Objc文件编译成Cpp文件，除了最基本的实现，整个代码3MB多，整整5w多行。所以大概率Objc编译多过程中是不会间接生成cpp代码的。
 
 - 从展开代码可以看出OC的对象、类都是基于C/C++当中结构体实现的
 - 所有类的对象共享一个Class指针地址，每个类在内存中有且只有一个Class对象【前置：`Objc`内存中类的存在也是一个对象的重要发言】
@@ -143,7 +143,7 @@ int testblock() {
 
 ###  Tagged Pointer —— 一种假指针
 
-`Tagged Pointer`是一种很神奇的存在，其在代码中虽然表现为正常的一个指针类型的变量，但是实际上其存储的内容不再是对应内容的地址，而是对应内容的本身。
+​	`Tagged Pointer`是一种很神奇的存在，其在代码中虽然表现为正常的一个指针类型的变量，但是实际上其存储的内容不再是对应内容的地址，而是对应内容的本身。
 
 - 也就是说，如果指针将要存储的内容可以由8个字节【指针变量原本的大小】承载，那么编译器会将这部分内容存储到指针变量当中
 - 体现在多线程上，则是每次修改其内容并不需要考虑申请与释放，因为它通过一条指令就可以直接被修改而没有中间过程
@@ -167,11 +167,11 @@ int main(int argc, char * argv[]) {
 }
 ```
 
-如果你的程序使用了`AppKit`或`UIKit`框架，那么主线程的`RunLoop`就会在每次事件循环迭代中创建并处理`@autoreleasepool`。也就是说，应用程序所有`autorelease`对象的都是由`RunLoop`创建的`@autoreleasepool`来管理。而`main()`函数中的`@autoreleasepool`只是负责管理它的作用域中的`autorelease`对象。
+​	如果你的程序使用了`AppKit`或`UIKit`框架，那么主线程的`RunLoop`就会在每次事件循环迭代中创建并处理`@autoreleasepool`。也就是说，应用程序所有`autorelease`对象的都是由`RunLoop`创建的`@autoreleasepool`来管理。而`main()`函数中的`@autoreleasepool`只是负责管理它的作用域中的`autorelease`对象。
 
 #### 本质：
 
-一个结构体（C++类），有构造和析构函数，这个结构体会在初始化时调用 `objc_autoreleasePoolPush()` 方法，会在析构时调用 `objc_autoreleasePoolPop()` 方法
+​	一个结构体（C++类），有构造和析构函数，这个结构体会在初始化时调用 `objc_autoreleasePoolPush()` 方法，会在析构时调用 `objc_autoreleasePoolPop()` 方法
 
 #### 自动释放池的构成单元：AutoreleasePoolPage 
 
@@ -209,13 +209,13 @@ class AutoreleasePoolPage {
 
 ```
 
-每一个自动释放池都是由一系列的 `AutoreleasePoolPage` 组成的，并且每一个 `AutoreleasePoolPage` 的大小都是 `4096` 字节（16 进制 0x1000），并以双向链表的形式连接在一起。
+​	每一个自动释放池都是由一系列的 `AutoreleasePoolPage` 组成的，并且每一个 `AutoreleasePoolPage` 的大小都是 `4096` 字节（16 进制 0x1000），并以双向链表的形式连接在一起。
 
 注：`nil` 用于表示指向 Objective-C 对象（id 类型的对象，或者使用 @interface 声明的 OC 对象）的指针为空
 
 ##### 哨兵对象：POOL_BOUNDARY【之前叫POOL_SENTINEL】
 
-在每个自动释放池初始化调用 `objc_autoreleasePoolPush` 的时候，都会把一个 `POOL_SENTINEL` push 到自动释放池的栈顶，并且返回这个 `POOL_SENTINEL` 哨兵对象。而当方法 `objc_autoreleasePoolPop` 调用时，就会向自动释放池中的对象发送 `release` 消息，直到第一个 `POOL_SENTINEL`：
+​	在每个自动释放池初始化调用 `objc_autoreleasePoolPush` 的时候，都会把一个 `POOL_SENTINEL` push 到自动释放池的栈顶，并且返回这个 `POOL_SENTINEL` 哨兵对象。而当方法 `objc_autoreleasePoolPop` 调用时，就会向自动释放池中的对象发送 `release` 消息，直到第一个 `POOL_SENTINEL`：
 
 以上操作是针对`AutoreleasePoolPage`内部空间来说的
 
@@ -321,11 +321,11 @@ static inline void pop(void *token) {
 
 ##### 总结
 
-关于这部分，还有很多代码和细节没有去深究，毕竟还是在初学阶段（~~其实还是偷懒+看不懂~~），但是研究过后，还是不得不佩服苹果在这方面做出的细节，对于一个计算机的学生来说，这部分代码即是只是一个程序的内存管理系统，但是俨然已经很像一个完备的操作系统的内存管理系统。这部分，其实很像java的JVM系列的自动管理。
+​	关于这部分，还有很多代码和细节没有去深究，毕竟还是在初学阶段（~~其实还是偷懒+看不懂~~），但是研究过后，还是不得不佩服苹果在这方面做出的细节，对于一个计算机的学生来说，这部分代码即是只是一个程序的内存管理系统，但是俨然已经很像一个完备的操作系统的内存管理系统。这部分，其实很像java的JVM系列的自动管理。
 
 另：
 
-`not available in automatic reference counting mode`在学习的过程中发现了这个报错，发现现在高版本的Xcode的编译选项中已经自带引用计数器了，不需要程序员进行初始化
+​	`not available in automatic reference counting mode`在学习的过程中发现了这个报错，发现现在高版本的Xcode的编译选项中已经自带引用计数器了，不需要程序员进行初始化
 
 
 
@@ -346,9 +346,9 @@ static inline void pop(void *token) {
 - `userInfo`错误详细描述
 - `code`错误码
 
-除了通过错误码来访问相关错误信息，NSError还提供了对应的只读属性来直接读取相关信息。当创建 error 对象时，可以在userinfo中提供这些功能。
+​	除了通过错误码来访问相关错误信息，NSError还提供了对应的只读属性来直接读取相关信息。当创建 error 对象时，可以在userinfo中提供这些功能。
 
-不太用过这样的报错体系，希望后面学的更多能回来补充。
+​	不太用过这样的报错体系，希望后面学的更多能回来补充。
 
 ## 2023.10.17
 
@@ -370,10 +370,10 @@ static inline void pop(void *token) {
 
 ## 小结语
 
-关于Objective-C的基础学习基本就到这里了，从脉络上基本参考了一个[基础学习站](https://www.tutorialspoint.com/objective_c/objective_c_program_structure.htm)，很多中文小网站就是简单抄写翻译它的内容，还写的十分糟糕。（~~虽然本站也大抄特抄，乱写一通~~）
+​	关于Objective-C的基础学习基本就到这里了，从脉络上基本参考了一个[基础学习站](https://www.tutorialspoint.com/objective_c/objective_c_program_structure.htm)，很多中文小网站就是简单抄写翻译它的内容，还写的十分糟糕。（~~虽然本站也大抄特抄，乱写一通~~）
 
-因为暂时没有了学业与求职的压力，在学习的过程中，我基本保持了一股淡淡的好奇心，其实许多内容在基础站上在后面提到，但是由于前面略微出现过，就先查了，结果越查越深入（~~看不懂~~），不过这样维持自我驱动力的学习感觉挺好。
+​	因为暂时没有了学业与求职的压力，在学习的过程中，我基本保持了一股淡淡的好奇心，其实许多内容在基础站上在后面提到，但是由于前面略微出现过，就先查了，结果越查越深入（~~看不懂~~），不过这样维持自我驱动力的学习感觉挺好。
 
-要向IOS开发更进一步，关于OC的基础以及一些底层，以后应该还会在这里补充更新，敬请期待。
+​	要向IOS开发更进一步，关于OC的基础以及一些底层，以后应该还会在这里补充更新，敬请期待。
 
-目标是成为一名优秀的苹果开发者吧。
+​	目标是成为一名优秀的苹果开发者吧。
