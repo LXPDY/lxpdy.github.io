@@ -24,7 +24,7 @@ comment: true
 
 ### 写在前面
 
-​	借由和[ynyyn](iyn.me)（~~先辈！~~）聊天的契机，了解到了[玉令天下](https://yulingtianxia.com/)的主页。说来也是神奇，当我第一次投递鹅厂，秋招第一场面试就是他给我面的（~~当时是不知道的，看了脉脉上的照片而后知后觉~~）。虽然第一面通过了，却被总监挂掉，遗憾无缘手Q，但是几轮面试积累的经验和自信给了我很大帮助，（~~最后还是拿了鹅厂的意向~~）
+​	借由和[ynyyn](https://iyn.me)（~~先辈！~~）聊天的契机，了解到了[玉令天下](https://yulingtianxia.com/)的主页。说来也是神奇，当我第一次投递鹅厂，秋招第一场面试就是他给我面的（~~当时是不知道的，看了脉脉上的照片而后知后觉~~）。虽然第一面通过了，却被总监挂掉，遗憾无缘手Q，但是几轮面试积累的经验和自信给了我很大帮助，（~~最后还是拿了鹅厂的意向~~）
 
 ​	看了博客后，我对这位同样是工大毕业的学长充满了敬畏，不论是他鹅厂实习入职第一个月写的[blog](https://yulingtianxia.com/blog/2015/11/13/Summary-of-the-first-month-in-the-internship-of-Tencent/)，还是他博客中的技术文章，其深度广度让我佩服的同时，又感到深深的压力以及自卑（~~虽然他实习时已经是研究生了，而且好像在其他地方页实习过，而我只是个小本科~~）。从完成[公司的需求](https://yulingtianxia.com/blog/2014/04/09/iosgua-gua-qia-de-shi-xian/)、各种设计模式到IOS运行的各种[底层机制](https://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/)，到开发[小工具](https://yulingtianxia.com/blog/2016/11/28/pbxprojHelper/)、[逆向微信](https://yulingtianxia.com/blog/2017/03/06/How-to-hook-the-correct-method-in-reverse-engineering/)，以及和各种其他[技术博客](https://blog.sunnyxx.com/archives/page/3/)的联动，博客的评论区，都让我感到他对技术的热爱，以及当时苹果开发者社区的美好氛围。（~~虽然这些博客的主要精华都停在了13-16年~~），即使如此，其中大部分文章都十分值得学习，我会将这位学长的博客以及其中用到相关知识作为这一阶段的主要学习目标（~~心里还是希望能接触一些新的技术，不过难找好又看得懂的资源~~）。
 
