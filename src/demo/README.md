@@ -8,7 +8,8 @@ comment: false
 
 ## 目录
 
-- [Object-C学习日记](Objective-C基础学习日记.md)
+- [Object-C基础学习日记](Objective-C基础学习日记.md)
+- [iOS进阶学习日记](站在巨人的肩膀上-IOS开发进阶日记.md)
 
 ## 前言
 虽然是按日期更新，有时也会补充一下前面的内容
