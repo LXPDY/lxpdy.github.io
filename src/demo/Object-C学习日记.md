@@ -1,5 +1,5 @@
 ---
-title: Object-C学习日记
+title: Objective-C学习日记
 
 order: 1
 icon: file
@@ -10,18 +10,18 @@ date: 2023-10
 category:
   - 学习日记
 tag:
-  - Objetc-C
+  - Objective-C
 footer: 这是一个页脚
 # 你可以自定义版权信息
 copyright: 文章内容归作者所有，不保证完全正确
 comment: false
 ---
 
-# Object-C学习日记
+# Objective-C学习日记
 
 ## 2023.10.10 
 
-### Object-C++的存在
+### Objective-C++的存在
 
 在`Xcode`中直接创建一个macOS的命令行工程，尝试在其中添加CPP代码
 
@@ -62,7 +62,7 @@ int main1() {
 }
 ```
 
-发现是无法在Xcode中直接编译运行的。对于混编代码，需要在`Xcode`侧边栏将文件扩展名更改为`.mm`类型后选择`Objec-C++`的类型才行。
+发现是无法在Xcode中直接编译运行的。对于混编代码，需要在`Xcode`侧边栏将文件扩展名更改为`.mm`类型后选择`Objective-C`的类型才行。
 
 Objc的代码中可以直接`import`C++的头文件，调用C++的函数来实现逻辑。但是Objc的原生类方法声明实现风格和C++书写风格迥异。
 
@@ -74,7 +74,7 @@ Objc的代码中可以直接`import`C++的头文件，调用C++的函数来实�
 
 ## 2023.10.12 
 
-### Object-C Block，Objc版本的lambda表达式？block作返回值
+### Objective-C Block，Objc版本的lambda表达式？block作返回值
 
 ```objc
 typedef void (^SeleFunc)(int n);
@@ -108,7 +108,7 @@ int testblock() {
 
 ## 2023.10.12 - 13 
 
-### Object-C底层研究
+### Objective-C底层研究
 
 看了几篇文章[Objective-C的本质](https://cloud.tencent.com/developer/article/1136783)、[OC对象的前世今生](https://juejin.cn/post/6844904024659984391#heading-20)、 [自动释放池](https://draveness.me/autoreleasepool/)
 
@@ -349,5 +349,16 @@ static inline void pop(void *token) {
 
 不太用过这样的报错体系，希望后面学的更多能回来补充。
 
+## 2023.10.17
 
+#### 分类(Category)和扩展(Extension)
 
+- 为一个已有的类添加新功能
+
+- 通常分类的声明会放在单独的头文件中, 实现的代码也会放置在单独的源码文件中【虽然从分类中添加的方法对于它所有的实例以及子类实例都可见, 但是我们在使用这些方法时, 仍然是需要引入对应头文件的】
+
+-  我们也可以使用分类将一个复杂的类的实现分开成多个文件管理
+- 分类可以用来声明实例方法或者类方法, 但是大多数情况下不适宜声明额外的属性. 虽然从语法角度看在分类的声明中声明属性是可行的, 但是却不能够在分类中声明额外的实例变量
+- 类扩展（匿名分类）【只能添加到在编译时拥有源代码的类】
+  - 和普通分类不同的是, 类扩展可以为类添加属性和实例变量
+  - 通过在一个类的实现文件中添加类扩张，可以将一些类的属性在单文件内公开，但是不影响其他外部引用
