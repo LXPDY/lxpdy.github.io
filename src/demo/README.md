@@ -3,7 +3,7 @@ title: 开发学习日志
 index: true
 category:
   - 前言
-comment: false
+comment: true
 ---
 
 ## 目录

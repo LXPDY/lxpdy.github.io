@@ -1,6 +1,6 @@
 ---
 title: 前言
-comment: false
+comment: true
 ---
 
 都还没写呢。
