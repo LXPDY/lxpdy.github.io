@@ -12,7 +12,7 @@ category:
 tag:
   - 日记
 
-comment: false
+comment: true
 ---
 # 我的秋招历程（2023.8-2023.10）已完结
 
