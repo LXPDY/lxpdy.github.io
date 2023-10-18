@@ -3,18 +3,18 @@ import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
 
 export default hopeTheme({
-  hostname: "https://vuepress-theme-hope-docs-demo.netlify.app",
+  hostname: "https://fuyuyu.online",
 
   author: {
     name: "Fuyuyu",
-    url: "https://mister-hope.com",
+    url: "https://fuyuyu.online",
   },
 
   iconAssets: "fontawesome-with-brands",
 
   logo: "/logo.svg",
 
-  repo: "vuepress-theme-hope/vuepress-theme-hope",
+  repo: "lxpdy/lxpdy.github.io",
 
   docsDir: "src",
 
@@ -43,7 +43,7 @@ export default hopeTheme({
     // You should generate and use your own comment service
     comment: {
       provider: "Giscus",
-      repo: "lxpdy/giscus-discussions",
+      repo: "lxpdy/lxpdy.github.io",
       repoId: "R_kgDOG_Pt2A",
       category: "Announcements",
       categoryId: "DIC_kwDOG_Pt2M4COD69",

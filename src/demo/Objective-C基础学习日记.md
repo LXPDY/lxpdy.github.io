@@ -15,7 +15,7 @@ tag:
 footer: 这是一个页脚
 # 你可以自定义版权信息
 copyright: 文章内容归作者所有，不保证完全正确
-comment: false
+comment: true
 ---
 
 # Objective-C学习日记
