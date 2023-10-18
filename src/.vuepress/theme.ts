@@ -44,9 +44,9 @@ export default hopeTheme({
     comment: {
       provider: "Giscus",
       repo: "lxpdy/lxpdy.github.io",
-      repoId: "R_kgDOG_Pt2A",
+      repoId: "R_kgDOKeEC1A",
       category: "Announcements",
-      categoryId: "DIC_kwDOG_Pt2M4COD69",
+      categoryId: "DDIC_kwDOKeEC1M4CaOTv",
     },
 
     // All features are enabled for demo, only preserve features you need here
