@@ -83,5 +83,5 @@ footer: 使用 <a href="https://theme-hope.vuejs.press/zh/" target="_blank">VueP
 
 认准[本站域名fuyuyu.online](https://fuyuyu.online)
 
-##友情链接
-#[一年又一年](https://iyn.me)
+## 友情链接
+# [一年又一年](https://iyn.me)
