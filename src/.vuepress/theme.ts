@@ -1,7 +1,6 @@
 import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
-
 export default hopeTheme({
   hostname: "https://fuyuyu.online",
 
@@ -90,6 +89,28 @@ export default hopeTheme({
       vuePlayground: true,
     },
 
+    components: {
+      // 你想使用的组件
+      components: [
+        "ArtPlayer",
+        "AudioPlayer",
+        "Badge",
+        "BiliBili",
+        "CodePen",
+        "PDF",
+        "Replit",
+        "Share",
+        "SiteInfo",
+        "StackBlitz",
+        "VidStack",
+        "VideoPlayer",
+        "XiGua",
+        "YouTube",
+      ],
+    },
+    
+   
+    
     // uncomment these if you want a pwa
     // pwa: {
     //   favicon: "/favicon.ico",

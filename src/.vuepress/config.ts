@@ -9,7 +9,10 @@ export default defineUserConfig({
   description: "Fuyuyuの小站",
 
   theme,
-
   // Enable it with pwa
   // shouldPrefetch: false,
+  
 });
+
+
+

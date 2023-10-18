@@ -77,6 +77,9 @@ footer: 使用 <a href="https://theme-hope.vuejs.press/zh/" target="_blank">VueP
 ---
 ·
 ·
+# 为什么要演奏春日影！
+<AudioPlayer src="music.mp3" />
+
 如果你喜欢本站，那谢谢喜欢本站。
 
 如果你不喜欢本站，那谢谢浏览本站。。
@@ -84,4 +87,4 @@ footer: 使用 <a href="https://theme-hope.vuejs.press/zh/" target="_blank">VueP
 认准[本站域名fuyuyu.online](https://fuyuyu.online)
 
 ## 友情链接
-# [一年又一年](https://iyn.me)
+### [一年又一年](https://iyn.me)
