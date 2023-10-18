@@ -46,7 +46,7 @@ export default hopeTheme({
       repo: "lxpdy/lxpdy.github.io",
       repoId: "R_kgDOKeEC1A",
       category: "Announcements",
-      categoryId: "DDIC_kwDOKeEC1M4CaOTv",
+      categoryId: "DIC_kwDOKeEC1M4CaOTv",
     },
 
     // All features are enabled for demo, only preserve features you need here
