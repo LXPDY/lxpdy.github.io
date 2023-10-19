@@ -31,7 +31,7 @@ comment: true
 
 参考文章：
 
-[[Objective-C Runtime](https://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/)](https://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/)
+[[Objective-C Runtime](https://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/)
 
 杨老师基本上翻译了苹果的文章，加上的自己的理解，有些部分没有翻译，看的我满头大汗
 
@@ -46,7 +46,11 @@ comment: true
 ## 为什么要引入Runtime机制
 
 ```
-The Objective-C language defers as many decisions as it can from compile time and link time to runtime. Whenever possible, it does things dynamically. This means that the language requires not just a compiler, but also a runtime system to execute the compiled code. The runtime system acts as a kind of operating system for the Objective-C language; it’s what makes the language work。 —— 摘自苹果官方文档
+The Objective-C language defers as many decisions as it can from compile time and link time to 
+runtime. Whenever possible, it does things dynamically. This means that the language requires 
+not just a compiler, but also a runtime system to execute the compiled code. The runtime system 
+acts as a kind of operating system for the Objective-C language; it’s what makes the language 
+work。 —— 摘自苹果官方文档
 ```
 
 Objective-C 语言将尽可能多的决策从编译时和链接时**推迟到运行时**。只要有可能，它就会**动态**地执行操作。这意味着该语言不仅需要编译器，还需要运行时系统来执行编译后的代码。Runtime机制某种程度上充当了该语言的操作系统，让这门语言能够运作起来。
@@ -123,7 +127,9 @@ Runtime是一个具有公共接口的动态共享库，该接口由位于目录`
 - 最后，它将过程的返回值传递作为自己的返回值
 
 ```
-Note: The compiler generates calls to the messaging function. You should never call it directly in the code you write. —— 摘自苹果官方文档
+Note: The compiler generates calls to the messaging function. You should never call it directly
+in the code you write. —— 摘自苹果官方文档
+
 这是提醒你永远不要直接在自己写的代码里尝试调用消息函数，不知道有没有好奇的程序员去试过。
 ```
 
@@ -142,7 +148,12 @@ Note: The compiler generates calls to the messaging function. You should never c
 当创建一个新对象时，会分配内存，初始化其实例变量。对象变量中的第一个是指向其类结构的指针。这个指针被称为`isa`，它使对象可以访问其类，通过类可以访问其继承的所有类。
 
 ```
-Note: While not strictly a part of the language, the isa pointer is required for an object to work with the Objective-C runtime system. An object needs to be “equivalent” to a struct objc_object (defined in objc/objc.h) in whatever fields the structure defines. However, you rarely, if ever, need to create your own root object, and objects that inherit from NSObject or NSProxy automatically have the isa variable.
+Note: While not strictly a part of the language, the isa pointer is required for an object to 
+work with the Objective-C runtime system. An object needs to be “equivalent” to a struct 
+objc_object (defined in objc/objc.h) in whatever fields the structure defines. However, you 
+rarely, if ever, need to create your own root object, and objects that inherit from NSObject or 
+NSProxy automatically have the isa variable.
+
 注意：虽然isa指针严格来说不属于语言的一部分，但它是对象与Runtime系统一起工作所必需的……
 定义一个对象相当于struct objc_object（在objc/objc.h中定义）
 从NSObject或NSProxy继承的对象会自动具有isa变量。
