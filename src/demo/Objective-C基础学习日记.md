@@ -127,6 +127,10 @@ int testblock() {
 - `class`调用类方法的轨迹     
   - `isa`找`meta-class`，方法不存在，就通过`superclass`找父类
 
+
+
+![class-diagram](http://yulingtianxia.com/resources/Runtime/class-diagram.jpg)
+
 ###  类的属性与成员变量
 
 这个是`Objc`的一个独特的变量管理策略。
