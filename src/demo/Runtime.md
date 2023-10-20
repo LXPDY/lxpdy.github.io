@@ -46,11 +46,12 @@ comment: true
 ### 为什么要引入Runtime机制
 
 ```
-The Objective-C language defers as many decisions as it can from compile time and link time to 
-runtime. Whenever possible, it does things dynamically. This means that the language requires 
-not just a compiler, but also a runtime system to execute the compiled code. The runtime system 
-acts as a kind of operating system for the Objective-C language; it’s what makes the language 
-work。 —— 摘自苹果官方文档
+The Objective-C language defers as many decisions as it can from compile time and 
+link time to runtime. Whenever possible, it does things dynamically. This means 
+that the language requires not just a compiler, but also a runtime system to 
+execute the compiled code. The runtime system acts as a kind of operating system 
+for the Objective-C language; it’s what makes the language work。 
+—— 摘自苹果官方文档
 ```
 
 Objective-C 这门语言会尽可能多的决策从编译时和链接时**推迟到运行时**。只要有可能，它就会**动态**地执行操作。这意味着该语言不仅需要编译器，还需要Runtime系统来执行编译后的代码。Runtime机制某种程度上充当了该语言的操作系统，让这门语言能够运作起来。
@@ -289,7 +290,10 @@ void dynamicMethodIMP(id self, SEL _cmd) {
 @end
 ```
 
-方法转发（如在"消息转发"中描述）和动态方法解析在很大程度上是独立的。**在转发机制生效之前**，类有机会**动态解析**方法。如果调用了`respondsToSelector:`或`instancesRespondToSelector:`，则动态方法解析器有机会首先为选择器提供一个`IMP`。如果您实现了`resolveInstanceMethod:`，**但希望特定选择器实际上通过转发机制进行转发，您可以为这些选择器返回NO**。
+方法转发`Forwarding`（在后问的"消息转发"`Message Forwarding`中提到的）和动态方法解析`Dynamic Method Resolution`在很大程度上是独立的。
+
+- **在转发机制生效之前**，类有机会**动态解析**方法。如果调用了`respondsToSelector:`或`instancesRespondToSelector:`，则动态方法解析器有机会首先为选择器提供一个`IMP`。
+- 如果已经实现了`resolveInstanceMethod:`，**但希望特定选择器实际上通过转发机制进行转发，**则可以为这些选择器返回NO。
 
 【这段的意思也就是说，上面的这种动态方法解析在执行的优先级上是高于消息转发的，在动态解析的方法中，在对应地方返回YES，则对应方法的实现就会由这个方法提供，反之如果返回了NO，则会按照消息机制正常的寻找对应方法的实现】
 
@@ -321,77 +325,84 @@ Objective-C程序可以**在运行时加载和链接新的类和分类**。新�
 
 ## Message Forwarding 消息转发
 
-`Sending a message to an object that does not handle that message is an error. However, before announcing the error, the runtime system gives the receiving object a second chance to handle the message.`也就是说，如果我们向一个对象发送了错误的消息，消息转发机制能够作为容错了来第二次处理这个消息。
-
-
+`Sending a message to an object that does not handle that message is an error. However, before announcing the error, the runtime system gives the receiving object a second chance to handle the message.`也就是说，如果我们向一个对象发送了错误的消息，消息转发机制能够作为容错了来第二次处理这个消息。引用杨老师的话来说就是“偷梁换柱”。
 
 ### Forwarding 转发机制
 
-如果向一个对象发送它不能处理的消息，Runtime系统会在宣告错误之前，发送一个`forwardInvocation:`消息给这个对象，附带一个`NSInvocation`对象作为唯一的参数。而`NSInvocation`对象封装了原始消息和随之传递的参数。
+如果向一个对象发送它不能处理的消息，Runtime系统会在报错之前，发送一个`forwardInvocation:`消息给这个对象【也就是调用这个方法】，附带一个`NSInvocation`对象作为唯一的参数。而`NSInvocation`对象封装了原始消息和随之传递的参数。
 
-程序员可以通过实现`forwardInvocation:`方法来为消息提供**默认响应**，或以其他方式避免错误。
+程序员可以通过实现`forwardInvocation:`方法来为消息提供**默认响应**，或以其他方式来避免报错。
 
 - 顾名思义，`forwardInvocation:`——用于将消息转发给另一个对象。
 
-为了了解转发的范围和意图，假设以下情景：首先，假设您正在设计一个对象，该对象可以响应一个叫做`negotiate`的消息，**而您希望其响应包括另一种对象的响应**。您可以在您实现的`negotiate`方法的某个地方将`negotiate`消息传**递给另一个对象**。
+为了了解转发的范围和意图，假设以下情景：
 
-再进一步，假设您希望您的对象对`negotiate`消息的**响应与另一个类中实现的响应完全相同**，但由于两个类可能来自不同继承体系的不同位置，导致无法通过继承来直接实现完全相同的功能。
+- 首先，假设您正在设计一个对象，该对象可以响应一个叫做`negotiate`的消息，**而您希望其响应为另一种对象的响应**。您可以在您实现的`negotiate`方法的**某个地方**将`negotiate`消息**传递给另一个对象**。
+
+- 再进一步，假设您希望您的对象对`negotiate`消息的响应与另一个类中实现的响应**完全相同**。但由于这两个类可能来自不同继承体系的不同位置，导致**无法通过继承来直接实现**完全相同的功能。【OC没有像C++一样能够直接实现多继承的机制】
 
 但是通过消息转发机制，可以借用其他类的方法，该方法只需将消息传递到另一个类的实例：
 
 ```objective-c
-- (id)negotiate
+- negotiate
 {
     if ([someOtherObject respondsTo:@selector(negotiate)])
         return [someOtherObject negotiate];
     return self;
 }
+//看不懂也没事，因为这个方法会被丢掉
 ```
 
-但是以这种方式处理事情可能会有点麻烦，特别是如果有许多消息都需要转发到其他对象的时候。这样程序员不得不去实现一个方法来处理每个从其他类借用的方法。此外，程序员在编写程序的时候可能无法包含所有需要转发消息的情况。该集合（需要转发的消息）可能依赖于runtime的事件，并且可能随着将来实现新的方法和类而发生变化。
+但是以这种方式处理事情可能会有点麻烦，特别是如果有许多消息都需要转发到其他对象的时候。这样程序员不得不去实现一个方法来处理每个从其他类借用的方法。此外，程序员在编写程序的时候可能**无法包含所有**需要转发消息的情况。该集合（需要转发的消息）可能依赖于Runtime的事件，并且可能随着将来实现新的方法和类而**发生变化**。
 
-【这段意思大概就是讲这种写死的方法很可能无法涵盖所有需要转发消息的情况，更别提runtime系统还支持边运行边追加类和方法了,~~所以上面这个呆呆的方法基本上可以扔掉了~~】
+【这段意思大概就是讲这种写死的方法很可能无法涵盖所有需要转发消息的情况，更别提Runtime系统还支持边运行边追加类和方法了,~~所以上面这个呆呆的方法基本上可以扔掉了~~】
 
-而`forwardInvocation:`提供了另外一种选择【推荐使用的】，这种方法是动态的，而不是静态的【原文还提到这是个“less ad hoc”的解决方案，英文就是绕】【本质上就是通过重写它来解决】
+而`forwardInvocation:`提供了另外一种选择【推荐使用的】，这种方法是动态的，而不是静态的【原文还提到这是个`“less ad hoc”`的解决方案，英文就是绕】【本质上就是通过重写它来解决】
 
 它的工作原理如下：当一个对象因为没有匹配的`selector`而无法响应一个消息时
 
-- Runtime系统通过发送一个「`forwardInvocation:`消息」来通知对象。
+- Runtime系统通过发送一个「`forwardInvocation:`消息」来通知对象【也就是调用这个方法】。
 - 每个对象都从`NSObject`类继承了「`forwardInvocation:`方法」。
-  - 但是，`NSObject`的版本只是调用了`doesNotRecognizeSelector:`。
+  - 但是，`NSObject`的版本只是调用了`doesNotRecognizeSelector:`。【顾名思义找不到选择器，应该就报错了】
 - 通过重写`NSObject`的版本并实现自己的版本，程序员就可以利用「`forwardInvocation:`消息」提供的机会来将消息转发给其他对象。
 
+为了转发一个消息，「`forwardInvocation:`方法」只需要做两件事
 
+- 确定消息应该**去哪里**
 
-为了转发一个消息，`forwardInvocation:`方法只需要做两件事
+- 把消息以及原始参数**发到「那个地方」**
 
-- 确定消息应该去哪里
-
-- 把消息以及原始参数发到「那个地方」
-
-  - 消息可以通过`invokeWithTarget:`方法发送
+- 消息可以通过`invokeWithTarget:`方法」发送
 
   - ```objective-c
     - (void)forwardInvocation:(NSInvocation *)anInvocation
     {
       //该消息的唯一参数是个NSInvocation类型的对象——该对象封装了原始的消息和消息的参数
         if ([someOtherObject respondsToSelector:[anInvocation selector]])
-            [anInvocation invokeWithTarget:someOtherObject];
+          //先要判断转发目的地有没有这个selector，不然转了没用就尴尬了
+            [anInvocation invokeWithTarget:someOtherObject];//进行转发
         else
             [super forwardInvocation:anInvocation];
     }
     ```
 
-  - 被转发的消息的**返回值将返回给原始发送方**。转发消息的返回值可以是任何类型，包括`id`、结构和双精度浮点数
+  - 被转发的消息的**返回值将返回给原始发送方**。转发消息的返回值可以是任何类型，包括`id`、结构体和双精度浮点数
 
-  - 实在`forwardInvocation:`消息发送前，Runtime系统会向对象发送`methodSignatureForSelector:`消息，并取到返回的方法签名用于生成`NSInvocation`对象。所以我们在重写`forwardInvocation:`的同时也要重写`methodSignatureForSelector:`方法，否则会抛异常
+  - 在`forwardInvocation:`消息发送前，Runtime系统会向对象发送`methodSignatureForSelector:`消息，并取到**返回**的**方法签名**用于生成`NSInvocation`对象。
 
-`forwardInvocation:`方法可以**作为未被识别的消息的分发中心**，将它们分发给不同的接收者。或者它可以是一个传输站，将所有消息发送到相同的目标。它可以将一个消息翻译成另一个消息，或者只是"吞咽"掉一些消息，使其没有响应和错误。`forwardInvocation:`方法还可以将多个消息合并成一个单一的响应。`forwardInvocation:`的功能取决于实现者。但是，它为程序设计打开了对象链接在转发链中的可能性。
+  - 所以我们在重写`forwardInvocation:`的同时也要重写`methodSignatureForSelector:`方法，否则会抛异常
+
+`forwardInvocation:`方法可以**作为未被识别的消息的分发中心**，将它们分发给不同的接收者。或者也可以说它是一个传输站，将所有消息发送到对应的目标。同时，它也可以将一个消息翻译成另一个消息，或者只是"吞咽"掉一些消息，使这些被处理掉的消息没有响应或者报错。这个方法还可以将多个消息合并成一个单一的响应，它功能取决于实现者。但是，它为程序设计打开了对象链接在转发链中的可能性。
 
 ```
-Note: The forwardInvocation: method gets to handle messages only if they don’t invoke an existing method in the nominal receiver. If, for example, you want your object to forward negotiate messages to another object, it can’t have a negotiate method of its own. If it does, the message will never reach forwardInvocation:
+Note: The forwardInvocation: method gets to handle messages only if they don’t 
+invoke an existing method in the nominal receiver. If, for example, you want
+your object to forward negotiate messages to another object, it can’t have a 
+negotiate method of its own. If it does, the message will never reach 
+forwardInvocation:
 //说白了就是类自己能处理的消息不可能被转发，想要转发就不能有原生解决方案
-For more information on forwarding and invocations, see the NSInvocation class specification in the Foundation framework reference.
+For more information on forwarding and invocations, see the NSInvocation class 
+specification in the Foundation framework reference.
 ```
 
 ### Forwarding and Multiple Inheritance 转发和多继承
