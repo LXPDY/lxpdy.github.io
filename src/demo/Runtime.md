@@ -409,7 +409,7 @@ specification in the Foundation framework reference.
 
 【终于到了又一重量级部分——多继承】
 
-通过转发的形式模仿继承能够在OC中实现一些多继承的效果。【这句话原文`Forwarding mimics inheritance, and can be used to lend some of the effects of multiple inheritance to Objective-C programs.`GPT都给整不会了】下图即为一种示例，通过一次消息转发，似乎就能实现继承相应方法的功能。
+通过转发的形式模仿继承能够在OC中实现一些多继承的效果。【这句话原文`Forwarding mimics inheritance, and can be used to lend some of the effects of multiple inheritance to Objective-C programs.`拗口得连GPT都给整不会了】下图即为一种示例，通过一次消息转发，似乎就能实现继承相应方法的功能。
 
 ![forwarding](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Art/forwarding.gif)
 
@@ -417,22 +417,22 @@ specification in the Foundation framework reference.
 
 在上图中`Warrior`和`Diplomat`没有继承关系，但是`Warrior`将`negotiate`消息转发给了`Diplomat`后，就好似`Diplomat`是`Warrior`的超类一样。
 
-转发提供了大多数从多重继承能实现的功能。但是，它们之间有一个重要的区别：
+转发提供了大多数能由多继承实现的功能。但是，它们之间有一个重要的区别：
 
-- 多重继承将不同的功能合并到一个单个对象中。它倾向于制造一个大型、多功能的对象。
+- 多继承是将不同的功能合并到一个单个对象中。它倾向于制造一个大型、多功能的对象。
 - 转发为不同的对象分配了不同的职责。它将问题**分解成更小的对象**，但将这些对象以「**对消息发送者透明的方式**」关联起来。
 
 ```
 消息转发弥补了 Objc 不支持多继承的性质，也避免了因为多继承导致单个类变得臃肿复杂。
 它将问题分解得很细，只针对想要借鉴的方法才转发，而且转发机制是透明的
-—— 玉令天下
+—— 杨老师
 ```
 
 ### Surrogate Objects 代理对象
 
 转发不仅模拟能多重继承的功能，还使开发轻量级的**代理对象**成为可能，这些代理对象代表或"覆盖"更实质的对象。代理对象代替其他对象，将消息传递给它.
 
-在*[The Objective-C Programming Language](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html#//apple_ref/doc/uid/TP30001163)*中的“远程消息传递`Remote Messaging`”中讨论的代理就是这样的。代理负责将消息转发到远程接收者的执行细节，确保参数值在连接上被确切地复制和送达。但它不会尝试做太多其他的事情；它不会复制远程对象的功能，只是**为远程对象提供了一个本地地址**，一个可以在另一个应用程序中接收消息的地方。
+在*[The Objective-C Programming Language](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html#//apple_ref/doc/uid/TP30001163)*中的“远程消息传递`Remote Messaging`”中讨论的代理就是这样的。代理负责将消息**转发**到远程接收者，确保参数值在连接上被确切地复制和送达。但它其他更复杂的功能；它不会复制远程对象的功能，只是**为远程对象提供了一个本地地址**，一个可以在另一个应用程序中接收消息的地方。
 
 【就像网络代理一样，为本地对象和远程对象的消息转发提供了一个代理桥梁】
 
@@ -444,9 +444,9 @@ specification in the Foundation framework reference.
 
 ### Forwarding and Inheritance 转发和继承
 
-尽管转发模拟了继承，但`NSObject`类永远不会混淆这两者
+尽管转发模拟了继承的功能，但`NSObject`类永远不会混淆这两者
 
-- 像`respondsToSelector:`和`isKindOfClass:`这样的方法只查看继承层次结构，而不查看转发链
+- 像`respondsToSelector:`和`isKindOfClass:`这样的原生方法只查看继承层次结构，而**不查看转发链**
 
 例如，如果一个Warrior对象被问及它是否能够响应`negotiate`消息：
 
@@ -458,7 +458,7 @@ if ([aWarrior respondsToSelector:@selector(negotiate)])
 
 如果想要得到与相应行为对应的回答，苹果提供了方法：
 
-在许多情况下，NO可能是正确的答案。但在这种情况下这可能不是【行为上】。如果您使用转发来设置代理对象或扩展类的功能，则转发机制应该尽可能透明，就像继承一样。**如果您希望您的对象表现得好像它真正继承了它们转发消息的对象的行为**，您需要重新实现`respondsToSelector:`和`isKindOfClass:`方法，以包括您的转发算法：
+在大部分下，NO应该是正确的答案。但在这种情况下这可能不是【行为上】。如果程序员使用转发来设置代理对象或扩展类的功能，则转发机制应该尽可能透明，就像继承一样。**但如果程序员希望应用了转发机制的对象表现得好像它真正继承了它们转发消息的对象的行为**，则需要重新实现`respondsToSelector:`和`isKindOfClass:`方法，来包括转发算法
 
 ```objective-c
 - (BOOL)respondsToSelector:(SEL)aSelector
@@ -473,6 +473,8 @@ if ([aWarrior respondsToSelector:@selector(negotiate)])
 ```
 
 除了`respondsToSelector:`和`isKindOfClass:`之外，`instancesRespondToSelector:`方法也应该反映转发算法。如果使用协议，那么`conformsToProtocol:`方法也应该加入到列表中。同样，如果一个对象转发它接收到的任何远程消息，那么它应该有一个`methodSignatureForSelector:`的版本，它可以返回对转发消息最终响应的方法的准确描述。例如，如果一个对象能够将消息转发到它的代理对象，那么您将如下实现`methodSignatureForSelector:`：
+
+【意思就是说只要涉及到转发的部分，都应该额外实现】
 
 ```objective-c
 - (NSMethodSignature*)methodSignatureForSelector:(SEL)selector
