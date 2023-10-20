@@ -1,0 +1,1 @@
+import{_ as o}from"./plugin-vue_export-helper-c27b6911.js";import{o as c,c as r,b as e,d as t}from"./app-e6461fb2.js";const s={},_=e("p",null,[t("我最喜欢的一个篇章"),e("br"),t(" 待完成")],-1),a=[_];function n(l,d){return c(),r("div",null,a)}const m=o(s,[["render",n],["__file","baz.html.vue"]]);export{m as default};
