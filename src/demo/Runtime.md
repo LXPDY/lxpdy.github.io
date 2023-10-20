@@ -87,7 +87,7 @@ NSObject的方法因此为每个子类的实例和类对象建立了固有行为
   - 这主要用于GDB在debug时【print-object 指令】打印这个从描述方法返回的字符串
     - 这个方法不知道它所要描述的类实际的的「实现」是怎么样的，所以它返回了一个字符串，包含了类名和地址。而NSObject的子类可以通过「重写/实现」这个方法以返回更多详细信息
       - Foundation类NSArray的`description`会返回其包含的对象的描述列表
-- `NSObject`的一些方法仅仅是用于查询Runtime系统的信息
+- NSObject的一些方法仅仅是用于查询Runtime系统的信息
   - 这些方法允许对象执行内省操作
     - `class`方法
       - 返回一个对象的类
@@ -102,15 +102,15 @@ NSObject的方法因此为每个子类的实例和类对象建立了固有行为
 
 ### Runtime function 运行时函数
 
-Runtime是一个具有公共接口的**动态共享库**，该接口由 位于目录`/usr/include/objc`中**头文件**中的 一组**函数和数据结构**组成。其中许多函数允许程序员使用普通的C语言来自己实现Objective-C代码编译时编译器的操作。而其他函数则构成了OC的功能基础。这些函数使得程序员能够开发其他接口到Runtime系统，成为增强开发环境的工具。在编写Objective-C代码时，程序员通常通常不需要直接使用这些基础函数。不过有时在编写Objective-C程序时，一些Runtime函数可能会有用。所有这些函数都在"Objective-C Runtime Reference"中有文档记录【苹果的这个链接已经挂掉了哈哈哈（一点都不好笑）】。
+Runtime是一个具有公共接口的**动态共享库**，该接口由 位于目录`/usr/include/objc`中**头文件**中的 一组**函数和数据结构**组成。其中许多函数允许程序员使用普通的C语言来自己实现OC代码编译时编译器的操作。而其他函数则构成了OC的功能基础。这些函数使得程序员能够开发其他接口到Runtime系统，成为增强开发环境的工具。在编写OC代码时，程序员通常通常不需要直接使用这些基础函数。不过有时在编写OC程序时，一些Runtime函数可能会有用。所有这些函数都在"Objective-C Runtime Reference"中有文档记录【苹果的这个链接已经挂掉了哈哈哈（一点都不好笑）】。
 
-【这段怎么写都有点别扭】
+【这段怎么写都有点别扭，苹果的在某些方面真的事无巨细】
 
 ## Messaging消息函数
 
 ### 引子
 
-这一章描述了如何将消息表达式转换为`objc_msgSend`函数调用，如何通过方法名称引用方法。解释了如何利用`objc_msgSend`，如果有需要的话还可以实现规避动态绑定。
+这一章描述了如何将消息表达式转换为`objc_msgSend`函数调用，如何通过方法名称直接引用方法。解释了如何利用`objc_msgSend`，如果有需要的话还可以通过代码来规避动态绑定。
 
 `动态绑定，熟悉的词，想起C++的虚函数表，感觉这个机制比虚函数离谱多了`
 
@@ -124,15 +124,17 @@ Runtime是一个具有公共接口的**动态共享库**，该接口由 位于�
 
 消息函数执行**动态绑定**所需的操作如下：
 
-- 首先，它查找`selecor`指向的`过程procedure`（方法的实现）。由于不同类实现的同名函数的存在，具体找到哪个方法取决于`receiver`所在的类
-- 然后，它调用该`过程`，将接收对象`(receiving object)`（指向其数据的指针）【是不是类似`C++的this指针`】和参数列表传递给该`过程`。
+- 首先，它查找`selecor`指向的过程`procedure`（方法实际上被实现的地方）。由于不同类实现存在同名函数，具体找到哪个方法取决于`receiver`所在的类【只要有确切的`selector`和`receiver`，就可以找到对应唯一的那个方法(当然是那个方法存在的情况下)】
+- 然后，它调用该过程，将接收对象`(receiving object)`（指向其数据的指针）【是不是类似`C++的this指针`】和参数列表传递给该过程。
 - 最后，它将过程的返回值传递作为自己的返回值
 
 ```
-Note: The compiler generates calls to the messaging function. You should never call it directly
-in the code you write. —— 摘自苹果官方文档
+Note: 
+The compiler generates calls to the messaging function. 
+You should never call it directly in the code you write. 
+—— 苹果官方文档
 
-这是提醒你永远不要直接在自己写的代码里尝试调用消息函数，不知道有没有好奇的程序员去试过。
+这是提醒你永远不要直接在自己写的代码里尝试直接调用消息函数，不知道有没有好奇的程序员去试过。
 ```
 
 消息的关键在于编译器为类和对象所构造的数据结构，该数据结构有两个基本元素（这又回到我前面写的OC基础了）
@@ -143,18 +145,19 @@ in the code you write. —— 摘自苹果官方文档
 ```
 
 - `isa `,也就是类分发表
-  - 【在我前面的文章中，提到了它指向的是元类】
-  - 【在苹果的文章中】，类分发表会讲方法选择弃和它们表示的方法的类的特定地址关联起来
-    - 例如，`setOrigin`方法的选择器与`setOrigin（实现）的地址`相关联，``display`方法的选择器与`display`的地址相关联
+  - 【在我前面的文章中，提到了它指向的数据结构是元类，其实就是类方法被实现的地方】
+  - 【在本文中】，类分发表会讲方法`selector`和它们表示的方法的类的特定地址关联起来
+    - 例如，`setOrigin`方法的选择器与「`setOrigin`的实现」的地址相关联，``display`方法的选择器与`display`的地址相关联
 
-当创建一个新对象时，会分配内存，初始化其实例变量。对象变量中的第一个是指向其类结构的指针。这个指针被称为`isa`，它使对象可以访问其类，通过类可以访问其继承的所有类。
+当创建一个新**对象**【类的实例】时，会分配内存，初始化其实例变量。对象拥有的变量中的第一个就是指向其「类结构」的指针。这个指针被称为`isa`，它使对象可以访问其**类**，通过类可以访问其继承的所有类。
 
 ```
-Note: While not strictly a part of the language, the isa pointer is required for an object to 
-work with the Objective-C runtime system. An object needs to be “equivalent” to a struct 
-objc_object (defined in objc/objc.h) in whatever fields the structure defines. However, you 
-rarely, if ever, need to create your own root object, and objects that inherit from NSObject or 
-NSProxy automatically have the isa variable.
+Note: While not strictly a part of the language, the isa pointer is required for
+an object to work with the Objective-C runtime system. An object needs to be 
+“equivalent” to a struct objc_object (defined in objc/objc.h) in whatever fields 
+the structure defines. However, you rarely, if ever, need to create your own 
+root object, and objects that inherit from NSObject or NSProxy automatically 
+have the isa variable.—— 苹果官方文档
 
 注意：虽然isa指针严格来说不属于语言的一部分，但它是对象与Runtime系统一起工作所必需的……
 定义一个对象相当于struct objc_object（在objc/objc.h中定义）
@@ -163,31 +166,33 @@ NSProxy automatically have the isa variable.
 
 <img src="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Art/messaging1.gif" alt="messaging1" style="zoom:70%;" /> <img src="http://yulingtianxia.com/resources/Runtime/class-diagram.jpg" alt="class-diagram" style="zoom:40%;" />
 
-【看图其实还算好懂，前提是你把文章认真看了】
+【看图其实还算好懂，前提是你把有关类的数据结构的文章认真看了】
 
-- 当向对象发送消息时，消息函数会按照对象的`isa`指针到达类结构，然后在分发表中查找方法`selector`
-  - 如果在类中找不到`selector`，`objc_msgSend`会跟随指向超类的指针，并尝试在其分发表中查找选择器。连续的失败会导致`objc_msgSend`遍历类层次结构，直到达到NSObject类
+- 当向对象发送消息时，消息函数会按照对象的`isa`指针到达类结构，然后在分发表中查找方法对应的`selector`
+  - 如果在类中找不到`selector`，`objc_msgSend`会跟随指向超类的指针，并尝试在其分发表中继续查找。连续的失败会导致`objc_msgSend`遍历类层次结构，直到达到NSObject类
   - 一旦找到`selector`，函数将调用表中输入的方法，并将`接收对象的数据结构`传递给它
 
 以上即是Runtime系统进行动态绑定的实现过程。`用术语来说就是：methods are dynamically bound to messages`
-
-
 
 为了加速消息传递过程，`Runtime`系统会缓存使用的`selectors`和方法的地址。每个类都有一个单独的**缓存**，它可以包含继承方法的`selector`以及类中定义的方法的`selector`。在搜索分发表之前，消息例程首**先检查接收对象类的缓存**（理论上，曾经使用过的方法可能会再次使用）。如果方法选择器在缓存中，消息传递只比函数调用略慢。一旦程序运行足够长时间以“热身”其缓存，几乎所有发送的消息都会找到缓存的方法。缓存会动态增长以适应程序运行时的新消息。
 
 ### 使用隐藏参数
 
-当`objc_msgSend`找到实现方法的过程时，它会调用该过程并将消息中的所有参数传递给它。它还会将两个隐藏参数传递给该过程：
+当`objc_msgSend`找到「实现方法的过程」时，它会**调用**该过程并将消息中的所有参数传递给它。它还会将两个隐藏参数传递给该过程：
 
-- 接收对象
-- 方法的`selector`
+- 接收对象`The receiving object`
+- 方法的selector `The selector for the method`
 
-这些参数使每个方法的实现都能明确了解调用它的消息表达式所拥有的两个部分。它们被称为**隐藏参数**，因为它们并不在定义方法的源代码中声明。它们是在编译代码时插入到实现中的 。
+这些参数使每个方法的实现都能明确了解调用它的消息所拥有的两个部分。
 
-尽管这些参数没有明确声明，源代码仍然可以引用它们（就像它可以引用接收对象的实例变量一样）。一个方法将接收对象引用为`self`(`this指针这不就来了`)，将自己的选择器引用为`_cmd`。在下面的示例中，`_cmd`引用了`strange`方法的`selector`，`self`引用了接收`strange`消息的对象
+- 它们被称为**隐藏参数**，因为它们并不在定义方法的源代码中声明。它们是在**编译代码时**插入到实现中的 。
+
+尽管这些参数没有明确声明，源代码仍然可以引用它们（就像它可以引用接收对象`receiving object`的实例变量一样）。一个方法将接收对象引用为`self`(`this指针这不就来了`)，将自己的选择器引用为`_cmd`。
+
+在下面的示例中，`_cmd`引用了`strange`方法的`selector`，`self`引用了接收`strange`消息的对象
 
 ```objective-c
-- (id)strange
+- strange
 {
     id  target = getTheReceiver();
     SEL method = getTheMethod();
@@ -200,13 +205,25 @@ NSProxy automatically have the isa variable.
 
 `self`是这两个参数中更有用的。实际上，它是将接收对象的实例变量提供给方法定义的方式。`这不还是this指针`
 
+#### 补充：SEL是什么？（摘自杨老师的文章）
+
+`objc_msgSend`函数第二个参数类型为`SEL`，它是`selector`在Objc中的表示类型（Swift中是`Selector`类）。`selector`是方法选择器，可以理解为**区分方法的 ID**，而这个 ID 的数据结构是`SEL`:
+
+```
+typedef struct objc_selector *SEL;
+```
+
+其实它就是个映射到方法的C字符串，你可以用 Objc 编译器命令 `@selector()` 或者 Runtime 系统的 `sel_registerName` 函数来获得一个 `SEL` 类型的方法选择器。
+
+**不同类中相同名字的方法所对应的方法选择器是相同的**，即使方法名字相同而变量类型不同也会导致它们具有相同的方法选择器，于是 Objc 中方法命名有时会带上参数类型(`NSNumber` 一堆抽象工厂方法拿走不谢)，Cocoa 中有好多长长的方法哦。
+
+
+
 ### 获取方法地址
 
-规避动态绑定的唯一方法是获取方法的地址，然后直接调用它，就像它是一个函数一样。这可能适用于当特定方法将在连续执行多次并且程序员希望避免每次执行方法时的消息传递开销的罕见情况。
+**规避动态绑定**的唯一方法是获取方法的地址，然后直接调用它，就像它是一个函数一样。这可能适用于当特定方法将会连续地执行多次，并且程序员希望避免每次执行方法时都因为消息传递机制产生额外的开销。
 
-使用NSObject类中定义的方法
-
-- `methodForSelector:`，就可以请求指向实现方法的过程的指针，然后就能通过使用指针调用该过程。
+- 使用NSObject类中定义的方法`methodForSelector:`就可以**请求指向实现方法的过程的指针**，然后就能通过使用指针调用该过程。
   - 通过该方法返回的指针必须小心地**强制转换为正确的函数类型**。强制转换应包括返回和参数类型。
 
 `从这里开始，这些方法我就保留了原文方法名中的冒号，而不是只保留方法名，在了解了消息机制后，冒号的存在还真无法忽视`
@@ -214,28 +231,30 @@ NSProxy automatically have the isa variable.
 下面的示例显示了如何直接调用实现`setFilled:`方法的过程：
 
 ```objective-c
-void (*setter)(id, SEL, BOOL);//声明了函数指针，参数分别是两个“隐藏参数”和一个方法原参数
+void (*setter)(id, SEL, BOOL);//声明了函数指针setter，参数分别是两个“隐藏参数”和一个方法原参数
 int i;
  
 setter = (void (*)(id, SEL, BOOL))[target
-    methodForSelector:@selector(setFilled:)];
+    methodForSelector:@selector(setFilled:)];//将获取的指针存入变量setter中
 for (i = 0; i < 1000; i++)
-    setter(targetList[i], @selector(setFilled:), YES);//在这里调用了一千次setter
-
-//请注意，methodForSelector:由Cocoa运行时系统提供，它不是Objective-C语言本身的特性
+    setter(targetList[i], @selector(setFilled:), YES);//在这里调用了一千次setter，不需要消息机制
+//@selector(setFilled:)就是用来获取setFilled的SEL的
+//请注意，methodForSelector:由Cocoa运行时系统提供，它并不是Objective-C语言本身的特性
 ```
 
-传递给过程的前两个参数是接收对象（self）和方法选择器（_cmd）。这些参数在方法语法中是隐藏的，但在调用方法作为函数时必须显式提供。
+传递给过程的前两个参数是接收对象（self）和方法选择器（_cmd）。这些参数在方法语法中是隐藏的，但在调用方法作为函数时**必须显式提供**。
 
 ## Dynamic Method Resolution 动态方法解析
 
-本章描述了如何可以动态提供方法的实现。
+本章描述了如何可以**动态提供方法的实现**。
 
 ![QQ20141113-1@2x](http://yulingtianxia.com/resources/QQ20141113-1@2x.png)
 
-### Dynamic Method Resolution
+### Dynamic Method Resolution 动态方法解析
 
-有些情况下，您可能希望动态提供方法的实现。例如，Objective-C中的声明属性特性（参见[The Objective-C Programming Language](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html#//apple_ref/doc/uid/TP30001163)中的“Declared Properties”）包括`@dynamic`指令
+有些情况下，程序员可能想要动态地提供方法的实现。
+
+例如，Objective-C中的声明属性特性（参见[The Objective-C Programming Language](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html#//apple_ref/doc/uid/TP30001163)中的“Declared Properties”）包括`@dynamic`指令
 
 ```objective-c
 @dynamic propertyName;
@@ -243,9 +262,11 @@ for (i = 0; i < 1000; i++)
 
 **这告诉编译器与该属性相关的方法将会以动态方式提供**。
 
-程序员可以通过实现`resolveInstanceMethod:`和`resolveClassMethod:`方法来动态地为给定`selector`提供实例方法和类方法的实现。
+程序员可以通过实现`resolveInstanceMethod:`和`resolveClassMethod:`方法来**动态地**为给定的`selector`所对应的实例方法和类方法**提供实现**。
 
-Objective-C方法本质上是接受至少两个参数的C函数——`self`和`_cmd`。您可以使用函数`class_addMethod`将一个函数添加到一个类作为方法。因此，给定以下函数
+Objective-C方法本质上是一个接受至少两个参数的C函数（接受`self`和`_cmd`）。
+
+程序员可以使用函数`class_addMethod`将一个函数添加到一个类作为方法。因此，给定以下函数
 
 ```objective-c
 void dynamicMethodIMP(id self, SEL _cmd) {
@@ -253,7 +274,7 @@ void dynamicMethodIMP(id self, SEL _cmd) {
 }
 ```
 
-然后就可以使用`resolveInstanceMethod:`将它动态添加到类作为一个名为`resolveThisMethodDynamically`的方法，像这样：
+在这之后，就可以使用`resolveInstanceMethod:`方法将这个实现动态地添加到目的类中一个名为`resolveThisMethodDynamically`的方法，像这样：
 
 ```objective-c
 @implementation MyClass
@@ -270,11 +291,11 @@ void dynamicMethodIMP(id self, SEL _cmd) {
 
 方法转发（如在"消息转发"中描述）和动态方法解析在很大程度上是独立的。**在转发机制生效之前**，类有机会**动态解析**方法。如果调用了`respondsToSelector:`或`instancesRespondToSelector:`，则动态方法解析器有机会首先为选择器提供一个`IMP`。如果您实现了`resolveInstanceMethod:`，**但希望特定选择器实际上通过转发机制进行转发，您可以为这些选择器返回NO**。
 
+【这段的意思也就是说，上面的这种动态方法解析在执行的优先级上是高于消息转发的，在动态解析的方法中，在对应地方返回YES，则对应方法的实现就会由这个方法提供，反之如果返回了NO，则会按照消息机制正常的寻找对应方法的实现】
 
 
-#### 补充：IMP是什么 
 
-摘自杨老师的文章：
+#### 补充：IMP是什么 (摘自杨老师的文章)
 
 `IMP`在`objc.h`中的定义是：
 
