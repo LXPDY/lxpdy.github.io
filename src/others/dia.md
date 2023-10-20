@@ -8,7 +8,7 @@ author: Fuyuyu
 # 设置写作时间
 date: 2023-10-07
 category:
-  - 使用指南
+  - 日常
 tag:
   - 日记
 

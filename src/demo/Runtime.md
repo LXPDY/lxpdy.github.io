@@ -161,7 +161,7 @@ NSProxy automatically have the isa variable.
 从NSObject或NSProxy继承的对象会自动具有isa变量。
 ```
 
-![messaging1](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Art/messaging1.gif) <img src="http://yulingtianxia.com/resources/Runtime/class-diagram.jpg" alt="class-diagram" style="zoom:50%;" />
+<img src="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Art/messaging1.gif" alt="messaging1" style="zoom:70%;" /> <img src="http://yulingtianxia.com/resources/Runtime/class-diagram.jpg" alt="class-diagram" style="zoom:40%;" />
 
 【看图其实还算好懂，前提是你把文章认真看了】
 
@@ -230,6 +230,8 @@ for (i = 0; i < 1000; i++)
 ## Dynamic Method Resolution 动态方法解析
 
 本章描述了如何可以动态提供方法的实现。
+
+![QQ20141113-1@2x](http://yulingtianxia.com/resources/QQ20141113-1@2x.png)
 
 ### Dynamic Method Resolution
 
@@ -300,4 +302,31 @@ Objective-C程序可以**在运行时加载和链接新的类和分类**。新�
 
 `Sending a message to an object that does not handle that message is an error. However, before announcing the error, the runtime system gives the receiving object a second chance to handle the message.`也就是说，如果我们向一个对象发送了错误的消息，消息转发机制能够作为容错了来第二次处理这个消息。
 
+
+
 ### Forwarding 转发机制
+
+如果向一个对象发送它不能处理的消息，Runtime系统会在宣告错误之前，发送一个`forwardInvocation:`消息给这个对象，附带一个`NSInvocation`对象作为唯一的参数。而`NSInvocation`对象封装了原始消息和随之传递的参数。
+
+程序员可以通过实现`forwardInvocation:`方法来为消息提供**默认响应**，或以其他方式避免错误。
+
+- 顾名思义，`forwardInvocation:——用于将消息转发给另一个对象。
+
+为了了解转发的范围和意图，假设以下情景：首先，假设您正在设计一个对象，该对象可以响应一个叫做`negotiate`的消息，**而您希望其响应包括另一种对象的响应**。您可以在您实现的`negotiate`方法的某个地方将`negotiate`消息传**递给另一个对象**。
+
+再进一步，假设您希望您的对象对`negotiate`消息的**响应与另一个类中实现的响应完全相同**，但由于两个类可能来自不同继承体系的不同位置，导致无法通过继承来直接实现完全相同的功能。
+
+但是通过消息转发机制，可以借用其他类的方法，该方法只需将消息传递到另一个类的实例：
+
+```objective-c
+- (id)negotiate
+{
+    if ([someOtherObject respondsTo:@selector(negotiate)])
+        return [someOtherObject negotiate];
+    return self;
+}
+
+
+```
+
+但是以这种方式处理事情可能会有点麻烦，特别是如果有许多消息都需要转发到其他对象的时候。这样程序员不得不去实现一个方法来处理您每个从其他类借用的方法。此外，可能无法处理在编写代码时不知道要转发的消息集的情况。该集合可能依赖于运行时的事件，并且可能随着将来实现新的方法和类而发生变化。
