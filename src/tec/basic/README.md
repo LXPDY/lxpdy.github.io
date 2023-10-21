@@ -355,7 +355,7 @@ static inline void pop(void *token) {
 
 ## 2023.10.17
 
-#### 分类(Category)和扩展(Extension)
+### 分类(Category)和扩展(Extension)
 
 - 为一个已有的类添加新功能
 
