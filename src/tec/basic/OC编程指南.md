@@ -1,12 +1,11 @@
 ---
 title: Objective-C编程
 
-order: 4
-icon: file
+order: 2
 # 设置作者
 author: Fuyuyu
 # 设置写作时间
-date: 2023-10
+date: 2023-10-21
 category:
   - 学习日记
 tag:

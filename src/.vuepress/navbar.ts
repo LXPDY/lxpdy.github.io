@@ -2,31 +2,28 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/demo/",
   {
-    text: "番剧/漫画杂谈",
-    icon: "lightbulb",
-    prefix: "/guide/",
+    text: "开发学习日志",
+    icon: "laptop-code",
+    prefix: "/tec/",
     children: [
       {
-        text: "咒术回战",
-        icon: "lightbulb",
-        prefix: "bar/",
-        children: ["baz", { text: "...", icon: "ellipsis", link: "" }],
+        text: "基础学习",
+        prefix: "basic/",
+        children: ["README","OC编程指南"],
       },
       {
-        text: "紫罗兰永恒花园",
-        icon: "lightbulb",
-        prefix: "foo/",
-        children: ["ray", { text: "...", icon: "ellipsis", link: "" }],
+        text: "进阶学习",
+        prefix: "advanced/",
+        children: ["README","Runtime"],
       },
     ],
   },
-  "/others/",
+  "/anime/",
+  "/others/",  
   {
     text: "Bilibili",
     icon: "book",
     link: "https://space.bilibili.com/151955537",
   },
-  
 ]);
