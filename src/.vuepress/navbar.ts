@@ -10,7 +10,7 @@ export default navbar([
       {
         text: "基础学习",
         prefix: "basic/",
-        children: ["README","OC编程指南"],
+        children: ["README", { text: "Programing with OC", link: "programWithOC" }],
       },
       {
         text: "进阶学习",

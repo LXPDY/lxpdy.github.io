@@ -40,4 +40,8 @@ comment: true
 ## 2023.10.21
 
 在翻译OC编程文章时，发现了很多有趣的文章，比如[讲设OC计模式的这篇](https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/Introspection/Introspection.html#//apple_ref/doc/uid/TP40010810-CH9-SW1)还有[KVC](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueCoding/index.html#//apple_ref/doc/uid/10000107-SW1)和[KVO](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177i)，先记录一下之后再翻译。
-[Xcode实用指南](https://developer.apple.com/documentation/xcode#//apple_ref/doc/uid/TP40010215)也需要学习
+[Xcode实用指南](https://developer.apple.com/documentation/xcode#//apple_ref/doc/uid/TP40010215)
+
+## 2023.10.22
+
+今天进一步翻译了OC编程中有关class的部分
