@@ -1,5 +1,5 @@
 ---
-title: Classes-类
+title: Defining Classes
 
 order: 1
 # 设置作者
@@ -7,7 +7,7 @@ author: Fuyuyu
 # 设置写作时间
 date: 2023-10-22
 category:
-  - 学习日记
+  - 文章翻译
 tag:
   - Programming with Objective-C
   - 进阶学习
@@ -91,7 +91,7 @@ comment: true
 
 用于声明类接口的Objective-C语法如下：
 
-```objective-c
+```objc
 @interface SimpleClass : NSObject
  
 @end
@@ -111,7 +111,7 @@ comment: true
 
 这些属性的声明应该在接口内部添加，如下所示：
 
-```objective-c
+```objc
 @interface Person : NSObject
  
 @property NSString *firstName;
@@ -127,13 +127,13 @@ comment: true
 
 你可以决定添加一个属性来表示一个人的出生年份，这样你就可以按年龄对人进行排序。你可以使用一个数字对象来表示一个属性：
 
-```objective-c
+```objc
 @property NSNumber *yearOfBirth;
 ```
 
 但是对于用来存储一个简单的数值来说这可能是一种过度使用。使用C提供的标量值可以作为替代方案，比如整数：
 
-```objective-c
+```objc
 @property int yearOfBirth;
 ```
 
@@ -147,7 +147,7 @@ comment: true
 
 Objective-C属性声明可以包括`Property Attributes`，用于指示属性是否打算为只读。在官方记录应用程序中，Person类的接口可能如下所示：
 
-```objective-c
+```objc
 @interface Person : NSObject
 @property (readonly) NSString *firstName;
 @property (readonly) NSString *lastName;
@@ -169,7 +169,7 @@ void SomeFunction();
 
 等效的Objective-C方法声明如下：
 
-```objective-c
+```objc
 - (void)someMethod;
 ```
 
@@ -191,7 +191,7 @@ void SomeFunction(SomeType value);
 
 Objective-C方法声明包括参数作为方法名的一部分，使用冒号，如下所示：
 
-```objective-c
+```objc
 - (void)someMethodWithValue:(SomeType)value;
 ```
 
@@ -199,7 +199,7 @@ Objective-C方法声明包括参数作为方法名的一部分，使用冒号，
 
 如果需要提供多个参数，OC的语法则与C完全不同。C函数的多个参数在括号内指定，并用逗号分隔；在Objective-C中，具有两个参数的方法的声明如下所示：
 
-```objective-c
+```objc
 - (void)someMethodWithFirstValue:(SomeType)value1 secondValue:(AnotherType)value2;
 ```
 
@@ -207,7 +207,7 @@ Objective-C方法声明包括参数作为方法名的一部分，使用冒号，
 
 某些编程语言允许使用所谓的命名参数`*named arguments*`的函数定义；需要重点关注的是，这在Objective-C中并不适用。**方法调用中的参数顺序必须与方法声明匹配**，**事实上，方法声明的secondValue:部分是方法名称的一部分**：
 
-```objective-c
+```objc
 someMethodWithFirstValue:secondValue:
 ```
 
@@ -219,7 +219,7 @@ someMethodWithFirstValue:secondValue:
 
 - 举个例子，这个方法与上面示例的方法具有**相同的签名**：
 
-  - ```objective-c
+  - ```objc
     - (void)someMethodWithFirstValue:(SomeType)info1 secondValue:(AnotherType)info2;
     ```
 
@@ -227,7 +227,7 @@ someMethodWithFirstValue:secondValue:
 
 - 这些方法与上面的方法具有不同的签名：
 
-  - ```objective-c
+  - ```objc
     - (void)someMethodWithFirstValue:(SomeType)info1 anotherValue:(AnotherType)info2;
     - (void)someMethodWithFirstValue:(SomeType)info1 secondValue:(YetAnotherType)info2;
     ```
@@ -240,7 +240,7 @@ someMethodWithFirstValue:secondValue:
 
 在本文档的其余部分提供的所有示例都使用类名前缀，如下所示：
 
-```objective-c
+```objc
 @interface XYZPerson : NSObject
 @property (readonly) NSString *firstName;
 @property (readonly) NSString *lastName;
@@ -277,7 +277,7 @@ Cocoa最初是用于构建NeXTStep操作系统应用程序的集成框架。当�
 
 提供类的实现的基本语法如下：
 
-```objective-c
+```objc
 #import "XYZPerson.h"
  
 @implementation XYZPerson
@@ -291,7 +291,7 @@ Cocoa最初是用于构建NeXTStep操作系统应用程序的集成框架。当�
 
 对于一个简单的类接口，比如这样：
 
-```objective-c
+```objc
 @interface XYZPerson : NSObject
 - (void)sayHello;
 @end
@@ -299,7 +299,7 @@ Cocoa最初是用于构建NeXTStep操作系统应用程序的集成框架。当�
 
 实现可能如下所示：
 
-```objective-c
+```objc
 #import "XYZPerson.h"
  
 @implementation XYZPerson
@@ -315,7 +315,7 @@ Cocoa最初是用于构建NeXTStep操作系统应用程序的集成框架。当�
 
 Objective-C从C继承了大小写敏感性，因此此方法：
 
-```objective-c
+```objc
 - (void)sayhello {
 }
 ```
@@ -326,7 +326,7 @@ Objective-C从C继承了大小写敏感性，因此此方法：
 
 还要注意，Objective-C中的空格使用是灵活的。习惯上，使用制表符或空格缩进代码块中的每一行，通常会看到左大括号在单独的一行上，就像这样：
 
-```objective-c
+```objc
 - (void)sayHello
 {
     NSLog(@"Hello, World!");
@@ -345,7 +345,7 @@ Xcode，苹果用于创建OS X和iOS软件的集成开发环境（IDE），将�
 
 类方法的典型用途是**作为工厂方法**，这是创建对象的**分配和初始化**过程的替代方法，如「对象是动态创建的」[Objects Are Created Dynamically](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/WorkingwithObjects/WorkingwithObjects.html#//apple_ref/doc/uid/TP40011210-CH4-SW7)中所述。例如，NSString类具有多种工厂方法，可用于创建空字符串对象或使用特定字符初始化的字符串对象，包括：
 
-```
+```objc
 + (id)string;
 + (id)stringWithString:(NSString *)aString;
 + (id)stringWithFormat:(NSString *)format, …;
