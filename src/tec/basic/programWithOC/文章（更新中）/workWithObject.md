@@ -1,5 +1,5 @@
 ---
-title: Working with Objects
+title: Working with Objects 使用对象
 
 order: 2
 # 设置作者
@@ -17,7 +17,7 @@ copyright: 文章内容归作者所有，不保证完全正确
 comment: true
 ---
 
-# Working with Objects 与对象一起工作
+# Working with Objects 使用对象
 
 Objective-C 应用程序中的大部分工作是通过在对象生态系统中来回发送消息来完成的。【苹果好几次提到这句话了】这些对象中的一些是由Cocoa或Cocoa Touch提供的框架类的实例，另一些是你自己编写的类的实例。
 

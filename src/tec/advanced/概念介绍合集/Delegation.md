@@ -1,7 +1,7 @@
 ---
 title: Delegation委托机制
 
-order: 2
+order: 1
 # 设置作者
 author: Fuyuyu
 # 设置写作时间

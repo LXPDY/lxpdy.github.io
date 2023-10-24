@@ -48,4 +48,9 @@ comment: true
 
 ## 2023.10.23
 
-今天进一步翻译了OC编程中有关对象的部分
+今天进一步翻译了OC编程中有关[对象](/tec/basic/programWithOC/文章（更新中）/workWithObject.md)的部分
+
+## 2023.10.24
+先标记一下未来的翻译计划
+[Advanced Memory Management Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html#//apple_ref/doc/uid/10000011i)
+[Concepts in Objective-C Programming](https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/Introspection/Introspection.html#//apple_ref/doc/uid/TP40010810-CH9-SW1)

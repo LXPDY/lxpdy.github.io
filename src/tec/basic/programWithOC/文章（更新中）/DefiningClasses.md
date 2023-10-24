@@ -1,5 +1,5 @@
 ---
-title: Defining Classes
+title: Defining Classes 定义类
 
 order: 1
 # 设置作者
