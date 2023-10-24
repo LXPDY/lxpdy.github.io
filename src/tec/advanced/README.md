@@ -39,8 +39,11 @@ comment: true
 
 ## 2023.10.21
 
-在翻译OC编程文章时，发现了很多有趣的文章，比如[讲设OC计模式的这篇](https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/Introspection/Introspection.html#//apple_ref/doc/uid/TP40010810-CH9-SW1)还有[KVC](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueCoding/index.html#//apple_ref/doc/uid/10000107-SW1)和[KVO](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177i)，先记录一下之后再翻译。
+在翻译OC编程文章时，发现了很多有趣的文章，比如
+[KVC](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueCoding/index.html#//apple_ref/doc/uid/10000107-SW1)
+[KVO](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177i)
 [Xcode实用指南](https://developer.apple.com/documentation/xcode#//apple_ref/doc/uid/TP40010215)
+先记录一下之后再翻译。
 
 ## 2023.10.22
 
@@ -51,6 +54,12 @@ comment: true
 今天进一步翻译了OC编程中有关[对象](/tec/basic/programWithOC/文章（更新中）/workWithObject.md)的部分
 
 ## 2023.10.24
-先标记一下未来的翻译计划
+先在这里标记一下未来的翻译计划
 [Advanced Memory Management Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html#//apple_ref/doc/uid/10000011i)
+内存控制
 [Concepts in Objective-C Programming](https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/Introspection/Introspection.html#//apple_ref/doc/uid/TP40010810-CH9-SW1)
+设计模式（哲学编程？）
+[Concurrency Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008091)
+并发编程
+[Threading Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/Introduction/Introduction.html#//apple_ref/doc/uid/10000057i)
+想读的东西真的越来越多了靠北
