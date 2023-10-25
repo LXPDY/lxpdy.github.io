@@ -1,6 +1,5 @@
 ---
-title: Delegation委托机制
-
+title: Delegation
 order: 1
 # 设置作者
 author: Fuyuyu
