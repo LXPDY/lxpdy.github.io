@@ -48,4 +48,4 @@ SEL aSelector = @selector(run);
 
 ### Definitive Discussion
 
-- [Working with Objects](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/WorkingwithObjects/WorkingwithObjects.html#//apple_ref/doc/uid/TP40011210-CH4) [翻译](/tec/basic/programWithOC/文章（更新中）/WorkWithObject.md)
+- [Working with Objects](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/WorkingwithObjects/WorkingwithObjects.html#//apple_ref/doc/uid/TP40011210-CH4) [翻译](/tec/basic/programWithOC/子章节/WorkWithObject.md)

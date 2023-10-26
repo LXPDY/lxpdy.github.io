@@ -1,5 +1,5 @@
 ---
-title: 进阶学习日记
+title: 进阶学习日志
 
 order: 0
 # 设置作者
@@ -51,7 +51,7 @@ comment: true
 
 ## 2023.10.23
 
-今天进一步翻译了OC编程中有关[对象](/tec/basic/programWithOC/文章（更新中）/WorkWithObject.md)的部分
+今天进一步翻译了OC编程中有关[对象](/tec/basic/programWithOC/子章节/WorkWithObject.md)的部分
 
 ## 2023.10.24
 先在这里标记一下未来的翻译计划,斜体为重点
@@ -74,3 +74,6 @@ comment: true
 *[Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks/Articles/00_Introduction.html#//apple_ref/doc/uid/TP40007502)* 块编程主题
 *[Operation Queues](https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/OperationObjects/OperationObjects.html#//apple_ref/doc/uid/TP40008091-CH101)* 操作队列
 *[Dispatch Queues](https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/OperationQueues/OperationQueues.html#//apple_ref/doc/uid/TP40008091-CH102)* 调度队列
+*[Error Handling Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ErrorHandlingCocoa/ErrorHandling/ErrorHandling.html#//apple_ref/doc/uid/TP40001806)* 错误处理编程指南
+*[Exception Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Exceptions/Exceptions.html#//apple_ref/doc/uid/10000012i)* 异常编程主题
+ [Acceptable Abbreviations and Acronyms](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/APIAbbreviations.html#//apple_ref/doc/uid/20001285) 可接受的缩写列表
