@@ -53,7 +53,7 @@ comment: true
 
 在OC应用程序中，大多数工作都是对象相互发送**消息**所产生的结果。通常，这些消息**由**类接口中明确声明的**方法定义**。然而，有时定义一组**与特定类无直接关联的相关方法**很有用。【所以协议就是为类添加成套方法的一种方法】
 
-Objective-C使用协议来定义一组相关方法，例如对象可能调用其[`delegate`](/tec/advanced/Delegation.md)的方法，而这些方法是可选或必需的。任何类都可以指示它采用某一个协议，这意味着它还必须为协议中的所有必需方法提供实现。
+Objective-C使用协议来定义一组相关方法，例如对象可能调用其[`delegate`](/tec/basic/概念介绍合集/Delegation.md)的方法，而这些方法是可选或必需的。任何类都可以指示它采用某一个协议，这意味着它还必须为协议中的所有必需方法提供实现。
 
 相关章节：使用协议[Working with Protocols](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/WorkingwithProtocols/WorkingwithProtocols.html#//apple_ref/doc/uid/TP40011210-CH11-SW1)
 

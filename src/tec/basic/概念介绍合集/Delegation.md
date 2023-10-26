@@ -16,7 +16,7 @@ copyright: 文章内容归作者所有，不保证完全正确
 comment: true
 ---
 
-这篇文章摘自[OC编程](/tec/basic/OC编程指南.md)苹果原文的超链接，由于是个弹窗所以贴不了网址
+这篇文章摘自[OC编程](/tec/basic/programWithOC/README.md)苹果原文的超链接，由于是个弹窗所以贴不了网址
 
 # Delegation 委托机制
 

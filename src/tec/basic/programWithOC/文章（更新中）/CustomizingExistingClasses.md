@@ -235,4 +235,4 @@ Objective-C通过 Runtime系统提供其动态行为。
 
 可以直接与此运行时系统进行交互，例如通过向对象添加关联引用。与类扩展不同，关联引用不会影响原始类的声明和实现，这意味着您可以将其用于您无法访问原始源代码的框架类。
 
-关联引用将一个对象与另一个对象链接在一起，类似于属性或实例变量。有关更多信息，请参阅[Associative References](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Chapters/ocAssociativeReferences.html#//apple_ref/doc/uid/TP30001163-CH24)。要了解有关Objective-C运行时的更多信息，请参阅[Runtime机制](/src/tec/advanced/Runtime.md)。
+关联引用将一个对象与另一个对象链接在一起，类似于属性或实例变量。有关更多信息，请参阅[Associative References](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjectiveC/Chapters/ocAssociativeReferences.html#//apple_ref/doc/uid/TP30001163-CH24)。要了解有关Objective-C运行时的更多信息，请参阅[Runtime机制](/tec/advanced/Runtime.md)。
