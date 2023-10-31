@@ -10,7 +10,7 @@ category:
   - 学习日记
 tag:
   - Objective-C
-  - 进阶学习
+  - 基础学习
 footer: 努力努力再努力
 # 你可以自定义版权信息
 copyright: 文章内容归作者所有，不保证完全正确
