@@ -4,4 +4,5 @@ src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
 .DS_Store
+src/.DS_Store
 src/.vuepress/.DS_Store
