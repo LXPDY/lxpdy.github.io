@@ -11,7 +11,7 @@ export default hopeTheme({
 
   iconAssets: "fontawesome-with-brands",
 
-  logo: "/logo.svg",
+  logo: "/logo2.png",
 
   repo: "lxpdy/lxpdy.github.io",
 
