@@ -1,1 +1,11 @@
 // place your custom styles here
+
+.vp-features {
+    .vp-feature-item {
+        background: rgba(255,255,255, 0.2);
+        &:hover {
+            // 写hover时候要怎么变
+            background: rgba(255,255,255, 0.6) !important
+        }
+    }
+}
