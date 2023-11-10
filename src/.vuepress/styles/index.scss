@@ -1,11 +1,25 @@
 // place your custom styles here
 
-.vp-features {
-    .vp-feature-item {
-        background: rgba(255,255,255, 0.2);
-        &:hover {
-            // 写hover时候要怎么变
-            background: rgba(255,255,255, 0.6) !important
+html[data-theme=dark] {
+    .vp-features {
+        .vp-feature-item {
+            background: rgba(0, 0, 0, 0.5);
+            &:hover {
+                // 写hover时候要怎么变
+                background: rgba(0, 0, 0, 0.8) !important
+            }
+        }
+    }
+}
+
+html[data-theme=light] {
+    .vp-features {
+        .vp-feature-item {
+            background: rgba(255,255,255, 0.5);
+            &:hover {
+                // 写hover时候要怎么变
+                background: rgba(255,255,255, 0.8) !important
+            }
         }
     }
 }
