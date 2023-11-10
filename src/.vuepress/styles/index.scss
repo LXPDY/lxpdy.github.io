@@ -10,6 +10,19 @@ html[data-theme=dark] {
             }
         }
     }
+    .vp-feature-header {
+        text-shadow: 2px 2px 19px #000000;
+    }
+    .vp-feature-description{
+        text-shadow: 1px 1px 9px #000000;
+    }
+    .vp-highlight-info{
+        text-shadow: 1px 1px 9px #000000;
+    }
+    .vp-description{
+        color: rgb(255, 255, 255);
+        text-shadow: 2px 2px 13px #000000;
+    }
 }
 
 html[data-theme=light] {
@@ -21,5 +34,18 @@ html[data-theme=light] {
                 background: rgba(255,255,255, 0.8) !important
             }
         }
+    }
+    .vp-feature-header {
+        text-shadow: 1px 1px 18px #ffffff;
+    }
+    .vp-feature-description{
+        text-shadow: 1px 1px 9px #ffffff;
+    }
+    .vp-highlight-info{
+        text-shadow: 1px 1px 9px #ffffff;
+    }
+    .vp-description{
+        color: rgb(0, 0, 0);
+        text-shadow: 2px 2px 13px #ffffff;
     }
 }
