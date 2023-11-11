@@ -12,7 +12,7 @@ category:
 tag:
   - 随笔
 
-comment: false
+comment: true
 ---
 
 这里可能会更新一些日常吧

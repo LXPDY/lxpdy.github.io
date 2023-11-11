@@ -22,7 +22,7 @@ export default navbar([
   "/anime/",
   "/others/",  
   {
-    text: "Bilibili",
+    text: "访问站主Bilibili",
     icon: "book",
     link: "https://space.bilibili.com/151955537",
   },
