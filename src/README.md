@@ -93,3 +93,4 @@ footer: 使用 <a href="https://theme-hope.vuejs.press/zh/" target="_blank">VueP
 <BiliBili bvid="BV1V3411S7rQ" />
 ## 友情链接
 ### [一年又一年](https://iyn.me)
+### [tobenot](https://tobenot.github.io/)
