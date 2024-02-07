@@ -22,13 +22,13 @@ highlights:
       background-repeat: repeat
       
     features:
-      - title: C/C++/Objective-C
+      - title: C/C++/Objective-C/Dart
         icon: code
-        details: C与C的超集们
+        details: C与C的超集，还有类C
         link: https://fuyuyu.icu/tec/
 
 
-      - title: iOS/MFC/QT
+      - title: iOS/MFC/QT/Flutter
         icon: box-archive
         details: 一些平台的客户端开发技术
         link: https://fuyuyu.icu/tec/basic/programWithOC/
@@ -54,12 +54,12 @@ highlights:
     features:
       - title: 战舰世界
         icon: highlighter
-        details: 顶级窝批，超测员，打个游戏像上班
+        details: 顶级窝批，(曾经是)超测员，打个游戏像上班
 
 
-      - title: CS2
+      - title: CS2/LOL
         icon: chart-pie
-        details: FPS怎么打怎么输，间歇性放弃
+        details: 怎么打怎么输，间歇性放弃
 
 
       - title: 番剧漫画
