@@ -70,7 +70,7 @@ highlights:
 
       - title: 视频剪辑制作
         icon: person-chalkboard
-        details: FinalCutPro使用者，视频制作者，B站小UP主，偶尔上次视频
+        details: FinalCutPro使用者，视频制作者，B站小UP主，偶尔更新视频
         link: https://space.bilibili.com/151955537
 
   - header: 本站声明
