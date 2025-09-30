@@ -52,9 +52,9 @@ highlights:
       background-repeat: repeat
       
     features:
-      - title: 战舰世界
+      - title: Girls Band Cry
         icon: highlighter
-        details: 顶级窝批，(曾经是)超测员，打个游戏像上班
+        details: 竖起小拇指吧！
 
 
       - title: CS2/LOL
@@ -90,7 +90,7 @@ footer: 使用 <a href="https://theme-hope.vuejs.press/zh/" target="_blank">VueP
 
 认准[本站域名fuyuyu.icu](https://fuyuyu.icu)
 # 我的视频
-<BiliBili bvid="BV1V3411S7rQ" />
+<BiliBili bvid="BV1NNx1etEcK" />
 ## 友情链接
 ### [一年又一年](https://iyn.me)
 ### [tobenot](https://tobenot.github.io/)
